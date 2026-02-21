@@ -6,6 +6,7 @@
     <title>茯茶镇戏剧节 官方购票平台</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -626,7 +627,7 @@
 
             <div class="mt-4">
               <h5 class="text-sm font-semibold text-emerald-900/90">支付方式</h5>
-              <div class="mt-2 grid grid-cols-2 gap-3 text-sm">
+              <div class="mt-2 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
                 <label class="pay-option flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-emerald-900/20 px-3 py-3 transition hover:border-theme-emerald">
                   <input type="radio" name="pay" value="微信支付" checked class="accent-theme-emerald" />
                   <span class="text-3xl" aria-hidden="true">🟢</span>
@@ -636,6 +637,11 @@
                   <input type="radio" name="pay" value="支付宝" class="accent-theme-emerald" />
                   <span class="text-3xl" aria-hidden="true">🔵</span>
                   <span>支付宝</span>
+                </label>
+                <label class="pay-option flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-emerald-900/20 px-3 py-3 transition hover:border-theme-emerald">
+                  <input type="radio" name="pay" value="Apple Pay" class="accent-theme-emerald" />
+                  <span class="text-3xl" aria-hidden="true"></span>
+                  <span>Apple Pay</span>
                 </label>
               </div>
             </div>
@@ -713,8 +719,10 @@
           </div>
           <p id="ticket-traveler" class="mt-4 text-sm text-emerald-900/85">您是第 1024 位入戏茯茶镇的旅人</p>
         </div>
-        <div class="mt-4 grid grid-cols-2 gap-3">
-          <a id="save-ticket-btn" download="fucha-ticket.svg" class="btn-emerald-ux inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold">保存至相册</a>
+        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-4">
+          <button id="add-wallet-btn" class="btn-emerald-ux inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold">添加到钱包（手机）</button>
+          <button id="add-calendar-btn" class="btn-emerald-ux inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold">添加到日历</button>
+          <button id="save-ticket-btn" class="btn-emerald-ux inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold">保存至相册</button>
           <button id="share-ticket-btn" class="btn-emerald-ux inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold">邀请戏搭子（分享链接）</button>
         </div>
         <button id="close-success" class="mt-3 w-full rounded-md border border-emerald-900/20 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50">关闭</button>
@@ -824,12 +832,15 @@
 
       const successModal = document.getElementById("success-modal");
       const successPanel = document.getElementById("success-panel");
+      const ticketCardElement = document.getElementById("ticket-card");
       const ticketTitle = document.getElementById("ticket-title");
       const ticketTime = document.getElementById("ticket-time");
       const ticketVenue = document.getElementById("ticket-venue");
       const ticketSeat = document.getElementById("ticket-seat");
       const ticketTraveler = document.getElementById("ticket-traveler");
       const ticketQr = document.getElementById("ticket-qr");
+      const addWalletBtn = document.getElementById("add-wallet-btn");
+      const addCalendarBtn = document.getElementById("add-calendar-btn");
       const saveTicketBtn = document.getElementById("save-ticket-btn");
       const shareTicketBtn = document.getElementById("share-ticket-btn");
       const closeSuccessButton = document.getElementById("close-success");
@@ -913,6 +924,55 @@
       const toDateKey = (date) => date.toISOString().slice(0, 10);
       const parseDateKeyFromTime = (timeText) => timeText.split(" ")[0].replaceAll(".", "-");
       const formatPrice = (price) => `¥${price}`;
+      const isIOSMobile = () => /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isAndroidMobile = () => /Android/i.test(navigator.userAgent);
+      const parseShowTimeToDate = (timeText) => {
+        const [datePart, timePart] = (timeText || "").split(" ");
+        if (!datePart || !timePart) return null;
+        const [year, month, day] = datePart.replaceAll(".", "-").split("-").map(Number);
+        const [hour, minute] = timePart.split(":").map(Number);
+        if (!year || !month || !day || Number.isNaN(hour) || Number.isNaN(minute)) return null;
+        return new Date(year, month - 1, day, hour, minute, 0);
+      };
+      const toICSDateUTC = (date) => {
+        const pad = (n) => String(n).padStart(2, "0");
+        return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}Z`;
+      };
+      const refreshPayOptionStyles = () => {
+        document.querySelectorAll(".pay-option").forEach((option) => {
+          const input = option.querySelector('input[name="pay"]');
+          if (!input) return;
+          if (input.checked) {
+            option.classList.add("border-theme-emerald", "bg-emerald-50/70", "ring-1", "ring-theme-emerald/20");
+          } else {
+            option.classList.remove("border-theme-emerald", "bg-emerald-50/70", "ring-1", "ring-theme-emerald/20");
+          }
+        });
+      };
+      const buildShowPurchaseUrl = (show, time, venue) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("show", show);
+        url.searchParams.set("time", time);
+        url.searchParams.set("venue", venue);
+        url.hash = "program-grid";
+        return url.toString();
+      };
+      const buildWalletPassUrl = (show, time, venue, seat) => {
+        const url = new URL(window.location.href);
+        url.pathname = "/passes/fucha-ticket.pkpass";
+        url.search = "";
+        url.hash = "";
+        url.searchParams.set("show", show);
+        url.searchParams.set("time", time);
+        url.searchParams.set("venue", venue);
+        url.searchParams.set("seat", seat || "电子票");
+        return url.toString();
+      };
+      const buildGoogleWalletUrl = (show, time, venue, seat) => {
+        const continueUrl = buildShowPurchaseUrl(show, time, venue);
+        const detail = encodeURIComponent(`${show} ${time} ${venue} ${seat || "电子票"}`);
+        return `https://pay.google.com/gp/w/u/0/home/signup?continue=${encodeURIComponent(continueUrl)}&hl=zh-CN&source=${detail}`;
+      };
 
       const scheduleEvents = programData.map((item) => ({
         date: parseDateKeyFromTime(item.time),
@@ -1066,8 +1126,8 @@
             <p class="text-sm text-emerald-900/80">演出地点：${item.venue}</p>
             <p class="font-semibold text-emerald-900">票价：￥${item.price}起</p>
           </div>
-          <div class="pointer-events-none absolute bottom-3 right-3 opacity-100 md:opacity-0 md:translate-y-2 md:transition md:group-hover:translate-y-0 md:group-hover:opacity-100">
-            <button class="choose-show-btn pointer-events-auto rounded-full bg-theme-gold px-3 py-1.5 text-xs font-semibold text-theme-text shadow-md" data-show="${item.title}" data-show-time="${item.time}" data-show-venue="${item.venue}">立即购票</button>
+          <div class="pointer-events-none mt-2 px-4 pb-4 md:absolute md:inset-x-4 md:bottom-4 md:mt-0 md:px-0 md:pb-0 md:opacity-0 md:translate-y-2 md:transition md:group-hover:translate-y-0 md:group-hover:opacity-100">
+            <button class="choose-show-btn pointer-events-auto w-full rounded-md bg-theme-gold px-4 py-2.5 font-semibold text-theme-text" data-show="${item.title}" data-show-time="${item.time}" data-show-venue="${item.venue}">立即购票</button>
           </div>
         `;
         return article;
@@ -1112,6 +1172,37 @@
       });
 
       const getCartTotal = () => cartState.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const runApplePay = async () => {
+        if (!window.PaymentRequest) {
+          throw new Error("当前设备/浏览器不支持 Apple Pay。");
+        }
+        const request = new PaymentRequest(
+          [
+            {
+              supportedMethods: "https://apple.com/apple-pay",
+              data: {
+                version: 3,
+                merchantIdentifier: "merchant.fucha.ticketing.demo",
+                merchantCapabilities: ["supports3DS"],
+                supportedNetworks: ["visa", "masterCard", "amex", "unionpay"],
+                countryCode: "CN",
+              },
+            },
+          ],
+          {
+            total: {
+              label: "茯茶镇戏剧节 官方购票平台",
+              amount: { currency: "CNY", value: getCartTotal().toFixed(2) },
+            },
+          }
+        );
+        if (request.canMakePayment) {
+          const canPay = await request.canMakePayment().catch(() => false);
+          if (!canPay) throw new Error("当前环境不可用 Apple Pay。");
+        }
+        const response = await request.show();
+        await response.complete("success");
+      };
 
       const upsertCartItem = (name, price, details, quantity = 1) => {
         const existing = cartState.items.find((item) => item.name === name && item.meta === details.meta);
@@ -1457,10 +1548,6 @@
         updateBodyFocus();
       };
 
-      const createTicketSvg = (title, time, venue, seat, qrUrl) => {
-        return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500"><rect width="100%" height="100%" fill="#f7f2e4"/><rect x="24" y="24" width="852" height="452" rx="22" fill="#fffef7" stroke="#d4a95c"/><text x="70" y="92" font-size="34" fill="#052e22">茯茶镇戏剧节 官方票根</text><text x="70" y="152" font-size="40" fill="#052e22">${title}</text><text x="70" y="205" font-size="24" fill="#047857">场次时间：${time}</text><text x="70" y="245" font-size="24" fill="#047857">演出地点：${venue}</text><text x="70" y="285" font-size="24" fill="#047857">座位号：${seat}</text><image href="${qrUrl}" x="650" y="165" width="170" height="170"/></svg>`;
-      };
-
       const openSuccess = () => {
         const topItem = cartState.items[0];
         const show = cartState.selectedShow || { show: topItem.name, time: topItem.time, venue: "茯茶镇戏剧节主会场" };
@@ -1475,8 +1562,6 @@
         ticketSeat.textContent = `座位号：${topItem.meta}`;
         ticketTraveler.textContent = `您是第 ${travelerNo} 位入戏茯茶镇的旅人`;
         ticketQr.src = qrUrl;
-        const svg = createTicketSvg(show.show, show.time, show.venue, topItem.meta, qrUrl);
-        saveTicketBtn.href = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
         successModal.classList.remove("hidden");
         successModal.classList.add("flex");
         successPanel.classList.remove("ticket-enter");
@@ -1497,21 +1582,69 @@
         ticketPhoneInput.value = saved;
       });
 
-      confirmPaymentButton.addEventListener("click", () => {
+      confirmPaymentButton.addEventListener("click", async () => {
         if (!cartState.items.length) return;
+        const payMethod = document.querySelector('input[name="pay"]:checked')?.value || "微信支付";
+        const originalText = confirmPaymentButton.textContent;
+        confirmPaymentButton.disabled = true;
+        confirmPaymentButton.textContent = payMethod === "Apple Pay" ? "Apple Pay 处理中..." : "支付处理中...";
+
+        if (payMethod === "Apple Pay") {
+          try {
+            await runApplePay();
+          } catch (error) {
+            window.alert(error.message || "Apple Pay 支付暂不可用，请切换其他支付方式。");
+            confirmPaymentButton.disabled = false;
+            confirmPaymentButton.textContent = originalText;
+            return;
+          }
+        }
+
         if (ticketPhoneInput.value.trim()) {
           window.localStorage.setItem("fucha_contact", ticketPhoneInput.value.trim());
         }
         minimizeCheckout();
         openSuccess();
+        confirmPaymentButton.disabled = false;
+        confirmPaymentButton.textContent = originalText;
+      });
+
+      saveTicketBtn.addEventListener("click", async () => {
+        if (!window.html2canvas) return;
+        const originalText = saveTicketBtn.textContent;
+        saveTicketBtn.textContent = "生成中...";
+        saveTicketBtn.disabled = true;
+        try {
+          const canvas = await window.html2canvas(ticketCardElement, {
+            backgroundColor: null,
+            scale: 2,
+            useCORS: true,
+          });
+          const link = document.createElement("a");
+          link.download = "fucha-ticket.png";
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+          saveTicketBtn.textContent = "已保存";
+        } catch {
+          saveTicketBtn.textContent = "保存失败";
+        } finally {
+          window.setTimeout(() => {
+            saveTicketBtn.textContent = originalText;
+            saveTicketBtn.disabled = false;
+          }, 1000);
+        }
       });
 
       shareTicketBtn.addEventListener("click", async () => {
         const topItem = cartState.items[0];
         if (!topItem) return;
-        const show = cartState.selectedShow || { show: topItem.name, time: topItem.time };
+        const show = cartState.selectedShow || {
+          show: topItem.name,
+          time: topItem.time,
+          venue: topItem.venue || "茯茶镇戏剧节主会场",
+        };
         const shareText = `我已购票：${show.show}（${show.time}）- 一起去茯茶镇戏剧节吧！`;
-        const shareUrl = `${window.location.origin}${window.location.pathname}?show=${encodeURIComponent(show.show)}`;
+        const shareUrl = buildShowPurchaseUrl(show.show, show.time, show.venue || "茯茶镇戏剧节主会场");
         if (navigator.share) {
           try {
             await navigator.share({ title: "茯茶镇戏剧节", text: shareText, url: shareUrl });
@@ -1521,13 +1654,105 @@
           }
         }
         try {
-          await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-          shareTicketBtn.textContent = "链接已复制";
+          await navigator.clipboard.writeText(shareUrl);
+          shareTicketBtn.textContent = "购买链接已复制";
         } catch {
           shareTicketBtn.textContent = "请手动复制链接";
         }
         window.setTimeout(() => {
           shareTicketBtn.textContent = "邀请戏搭子（分享链接）";
+        }, 1200);
+      });
+
+      addWalletBtn.addEventListener("click", async () => {
+        const topItem = cartState.items[0];
+        if (!topItem) return;
+        const show = cartState.selectedShow || {
+          show: topItem.name,
+          time: topItem.time,
+          venue: topItem.venue || "茯茶镇戏剧节主会场",
+        };
+        const seat = topItem.meta || "电子票";
+        const passUrl = buildWalletPassUrl(show.show, show.time, show.venue || "茯茶镇戏剧节主会场", seat);
+        const googleWalletUrl = buildGoogleWalletUrl(show.show, show.time, show.venue || "茯茶镇戏剧节主会场", seat);
+        const originalText = addWalletBtn.textContent;
+
+        if (isIOSMobile()) {
+          addWalletBtn.textContent = "正在打开 Apple 钱包...";
+          window.location.href = passUrl;
+          window.setTimeout(() => {
+            addWalletBtn.textContent = originalText;
+          }, 1200);
+          return;
+        }
+
+        if (isAndroidMobile()) {
+          addWalletBtn.textContent = "正在打开 Google Wallet...";
+          window.open(googleWalletUrl, "_blank", "noopener,noreferrer");
+          window.setTimeout(() => {
+            addWalletBtn.textContent = originalText;
+          }, 1200);
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(passUrl);
+          addWalletBtn.textContent = "钱包链接已复制";
+        } catch {
+          addWalletBtn.textContent = "请在手机端打开";
+        }
+        window.setTimeout(() => {
+          addWalletBtn.textContent = originalText;
+        }, 1200);
+      });
+
+      addCalendarBtn.addEventListener("click", () => {
+        const topItem = cartState.items[0];
+        if (!topItem) return;
+        const show = cartState.selectedShow || {
+          show: topItem.name,
+          time: topItem.time,
+          venue: topItem.venue || "茯茶镇戏剧节主会场",
+        };
+        const startDate = parseShowTimeToDate(show.time);
+        if (!startDate) {
+          addCalendarBtn.textContent = "时间格式错误";
+          window.setTimeout(() => {
+            addCalendarBtn.textContent = "添加到日历";
+          }, 1000);
+          return;
+        }
+        const endDate = new Date(startDate.getTime() + 120 * 60 * 1000);
+        const dtStamp = toICSDateUTC(new Date());
+        const dtStart = toICSDateUTC(startDate);
+        const dtEnd = toICSDateUTC(endDate);
+        const ticketMeta = topItem.meta || "电子票";
+        const eventUrl = buildShowPurchaseUrl(show.show, show.time, show.venue || "茯茶镇戏剧节主会场");
+        const icsContent =
+          "BEGIN:VCALENDAR\r\n" +
+          "VERSION:2.0\r\n" +
+          "PRODID:-//Fucha Theatre Fest//Ticket Calendar//CN\r\n" +
+          "CALSCALE:GREGORIAN\r\n" +
+          "METHOD:PUBLISH\r\n" +
+          "BEGIN:VEVENT\r\n" +
+          `UID:${Date.now()}@fucha-ticket\r\n` +
+          `DTSTAMP:${dtStamp}\r\n` +
+          `DTSTART:${dtStart}\r\n` +
+          `DTEND:${dtEnd}\r\n` +
+          `SUMMARY:${show.show}\r\n` +
+          `LOCATION:${show.venue || "茯茶镇戏剧节主会场"}\r\n` +
+          `DESCRIPTION:场次时间 ${show.time}；座位/票种 ${ticketMeta}；购票链接 ${eventUrl}\r\n` +
+          "END:VEVENT\r\n" +
+          "END:VCALENDAR\r\n";
+        const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "fucha-ticket-event.ics";
+        link.click();
+        URL.revokeObjectURL(link.href);
+        addCalendarBtn.textContent = "已添加日历文件";
+        window.setTimeout(() => {
+          addCalendarBtn.textContent = "添加到日历";
         }, 1200);
       });
 
@@ -1713,6 +1938,10 @@
       });
 
       requestAnimationFrame(() => {
+        refreshPayOptionStyles();
+        document.querySelectorAll('input[name="pay"]').forEach((input) => {
+          input.addEventListener("change", refreshPayOptionStyles);
+        });
         setActiveProgramTab("all");
         renderProgramCards();
         renderSeatGrid();
@@ -1722,6 +1951,13 @@
         syncSelectedDateToMonth();
         renderScheduleCalendar();
         renderScheduleDayEvents();
+        const query = new URLSearchParams(window.location.search);
+        const show = query.get("show");
+        const time = query.get("time");
+        const venue = query.get("venue");
+        if (show && time) {
+          selectShowAndRevealTickets(show, time, venue || "茯茶镇戏剧节主会场");
+        }
       });
     </script>
   </body>
