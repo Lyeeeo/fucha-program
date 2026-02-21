@@ -281,13 +281,21 @@
     <header class="fixed inset-x-0 top-0 z-50 border-b border-emerald-900/10 bg-white/85 backdrop-blur">
       <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#" class="font-heading text-base md:text-lg text-theme-text">茯茶镇戏剧节 官方购票平台</a>
-        <button
-          id="open-cart"
-          class="inline-flex items-center gap-2 rounded-full border border-theme-emerald px-3.5 py-1.5 text-xs md:text-sm font-semibold text-theme-text transition hover:bg-emerald-50"
-        >
-          购物车
-          <span id="cart-count" class="rounded-full bg-theme-gold px-2 py-0.5 text-xs text-theme-text">0</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            id="open-user-center"
+            class="inline-flex items-center rounded-full border border-emerald-900/20 px-3 py-1.5 text-xs font-semibold text-theme-text transition hover:bg-emerald-50 md:text-sm"
+          >
+            个人中心
+          </button>
+          <button
+            id="open-cart"
+            class="inline-flex items-center gap-2 rounded-full border border-theme-emerald px-3.5 py-1.5 text-xs font-semibold text-theme-text transition hover:bg-emerald-50 md:text-sm"
+          >
+            购物车
+            <span id="cart-count" class="rounded-full bg-theme-gold px-2 py-0.5 text-xs text-theme-text">0</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -312,6 +320,91 @@
             >
               立即选座购票
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="user-center" class="mx-auto hidden max-w-6xl px-6 py-12 md:py-16">
+        <div class="rounded-2xl border border-emerald-900/12 bg-white/75 p-5 shadow-sm md:p-7">
+          <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p class="text-sm uppercase tracking-[0.2em] text-emerald-800">Member Center</p>
+              <h2 class="mt-2 font-heading text-3xl md:text-4xl">个人中心</h2>
+            </div>
+            <div class="inline-flex w-full flex-nowrap overflow-x-auto rounded-xl border border-emerald-800/20 bg-white/60 p-1 md:w-auto" role="tablist" aria-label="个人中心导航">
+              <button class="user-tab-btn shrink-0 rounded-lg px-4 py-2 text-sm font-semibold text-theme-text transition" data-uc-tab="records">购票记录</button>
+              <button class="user-tab-btn shrink-0 rounded-lg px-4 py-2 text-sm font-semibold text-theme-text transition" data-uc-tab="drama">入戏值</button>
+              <button class="user-tab-btn shrink-0 rounded-lg px-4 py-2 text-sm font-semibold text-theme-text transition" data-uc-tab="reviews">戏评</button>
+              <button class="user-tab-btn shrink-0 rounded-lg px-4 py-2 text-sm font-semibold text-theme-text transition" data-uc-tab="wishlist">想看</button>
+            </div>
+          </div>
+
+          <div id="uc-panel-records" class="uc-panel mt-5">
+            <h3 class="font-heading text-2xl text-emerald-950">购票记录</h3>
+            <ul id="user-ticket-records" class="mt-3 space-y-3 text-sm">
+              <li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂无购票记录</li>
+            </ul>
+          </div>
+
+          <div id="uc-panel-drama" class="uc-panel mt-5 hidden">
+            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 class="font-heading text-2xl text-emerald-950">入戏值成长</h3>
+                <p class="mt-1 text-sm text-emerald-900/75">通过购票、戏评与参与活动持续成长。</p>
+              </div>
+              <div class="inline-flex items-center gap-3 rounded-full border border-theme-gold/60 bg-theme-gold/15 px-4 py-2">
+                <span id="drama-level-badge" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-theme-gold/80 bg-theme-gold/30 text-lg text-theme-text">🥉</span>
+                <div>
+                  <p id="drama-level-name" class="font-heading text-lg text-emerald-950">初学者</p>
+                  <p id="drama-level-score" class="text-xs text-emerald-900/70">入戏值 0</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <div class="mb-2 flex items-center justify-between text-xs text-emerald-900/75">
+                <span id="drama-level-current">当前等级：初学者</span>
+                <span id="drama-level-next">距离下一等级还需 300</span>
+              </div>
+              <div class="h-3 overflow-hidden rounded-full bg-emerald-100">
+                <div id="drama-progress-bar" class="h-full rounded-full bg-gradient-to-r from-theme-gold to-emerald-700 transition-all duration-500" style="width: 8%;"></div>
+              </div>
+            </div>
+
+            <div class="mt-5 rounded-xl border border-theme-gold/55 bg-[#d4a95c]/12 p-4">
+              <p class="text-sm font-semibold text-emerald-950">当前权益</p>
+              <ul id="drama-level-perks" class="mt-2 space-y-1 text-sm text-emerald-900/85">
+                <li>• 新手入戏礼包</li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="uc-panel-reviews" class="uc-panel mt-5 hidden">
+            <h3 class="font-heading text-2xl text-emerald-950">戏评</h3>
+            <div class="mt-3 grid gap-3 md:grid-cols-[1fr_120px]">
+              <select id="review-show-select" class="rounded-md border border-emerald-900/20 px-3 py-2.5 text-sm outline-none transition focus:border-theme-emerald">
+                <option value="">选择剧目</option>
+              </select>
+              <select id="review-rating-select" class="rounded-md border border-emerald-900/20 px-3 py-2.5 text-sm outline-none transition focus:border-theme-emerald">
+                <option value="5">5 分</option>
+                <option value="4">4 分</option>
+                <option value="3">3 分</option>
+                <option value="2">2 分</option>
+                <option value="1">1 分</option>
+              </select>
+            </div>
+            <textarea id="review-content-input" rows="3" placeholder="写下你的观演感受..." class="mt-3 w-full rounded-md border border-emerald-900/20 px-3 py-2.5 text-sm outline-none transition focus:border-theme-emerald"></textarea>
+            <button id="submit-review-btn" class="btn-emerald-ux mt-3 rounded-md px-4 py-2 text-sm font-semibold">发布戏评</button>
+            <ul id="review-list" class="mt-4 space-y-3 text-sm">
+              <li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">还没有戏评，去写下第一条吧。</li>
+            </ul>
+          </div>
+
+          <div id="uc-panel-wishlist" class="uc-panel mt-5 hidden">
+            <h3 class="font-heading text-2xl text-emerald-950">想看</h3>
+            <ul id="watchlist-list" class="mt-3 space-y-3 text-sm">
+              <li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂无想看剧目，去剧目页添加吧。</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -499,6 +592,99 @@
               </article>
             </div>
           </div>
+
+          <div id="drama-tea-bundle" class="rounded-2xl border border-theme-gold/60 bg-gradient-to-br from-[#f4e3bf] via-[#f8ecd3] to-white p-6 shadow-md">
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-[0.2em] text-emerald-800">戏茶同享套餐</p>
+                <h3 class="mt-1 font-heading text-2xl text-emerald-950">戏剧限定茶礼（8 折）</h3>
+                <p id="bundle-desc" class="mt-2 text-sm text-emerald-900/80">选择任意剧目后可解锁，带上一份好茶观戏更配哦。</p>
+              </div>
+              <span class="recommend-badge self-start rounded-full border border-theme-gold/80 bg-theme-gold/25 px-3 py-1 text-xs font-bold text-theme-text">非遗匠礼</span>
+            </div>
+            <div class="mt-5 grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
+              <div class="rounded-xl border border-emerald-900/15 bg-white/80 p-4 text-sm text-emerald-900/85">
+                礼盒内容：金花茯茶小罐 ×1、戏剧节限定闻香卡 ×1、关中手作票夹 ×1。
+              </div>
+              <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold text-emerald-950">¥150</p>
+                <p class="text-sm text-emerald-900/70 line-through">¥188</p>
+                <button id="add-drama-tea-bundle" class="btn-emerald-ux rounded-md px-4 py-2.5 text-sm font-semibold">
+                  加入订单
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cultural-bazaar" class="mx-auto max-w-6xl px-6 pb-24">
+        <div class="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="text-sm uppercase tracking-[0.2em] text-emerald-800">Cultural Bazaar</p>
+            <h2 class="mt-2 font-heading text-3xl md:text-4xl">文化集市</h2>
+            <p class="mt-2 text-sm text-emerald-900/80">文创周边与精品茯茶同步上新，支持与剧目订单统一结算。</p>
+          </div>
+          <div
+            class="inline-flex w-full flex-nowrap overflow-x-auto rounded-xl border border-emerald-800/20 bg-white/50 p-1 backdrop-blur-sm md:w-auto"
+            role="tablist"
+            aria-label="文化集市分类"
+          >
+            <button id="bazaar-tab-creative" class="bazaar-tab-btn shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition md:px-5" data-bazaar-tab="creative">
+              文创周边
+            </button>
+            <button id="bazaar-tab-tea" class="bazaar-tab-btn shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition md:px-5" data-bazaar-tab="tea">
+              精品茯茶
+            </button>
+          </div>
+        </div>
+
+        <div id="bazaar-card-grid" class="grid grid-cols-1 gap-6 md:grid-cols-3 xl:grid-cols-4"></div>
+      </section>
+
+      <section id="meet-makers" class="mx-auto max-w-6xl px-6 pb-24">
+        <div class="mb-8">
+          <p class="text-sm uppercase tracking-[0.2em] text-emerald-800">Meet the Makers</p>
+          <h2 class="mt-2 font-heading text-3xl md:text-4xl">匠人故事</h2>
+          <p class="mt-2 text-sm text-emerald-900/80">听见手作背后的温度，带走一份来自茯茶镇的真实心意。</p>
+        </div>
+
+        <div class="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2">
+          <article class="min-w-[280px] snap-start rounded-2xl border border-emerald-900/12 bg-white/80 p-4 shadow-sm md:min-w-[340px]">
+            <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=900&q=80" alt="茯茶匠人 王师傅" class="h-44 w-full rounded-xl object-cover" />
+            <h3 class="mt-3 font-heading text-xl text-emerald-950">王师傅｜金花守艺人</h3>
+            <p class="mt-2 text-sm leading-relaxed text-emerald-900/80">“做茶像搭戏台，火候与耐心都不能急。每一朵金花，都是时间写下的注脚。”</p>
+            <button class="maker-product-link mt-4 rounded-md border border-theme-gold/60 bg-theme-gold/10 px-3 py-2 text-sm font-semibold text-theme-text hover:bg-theme-gold/20" data-bazaar-tab="tea" data-product-name="金花茯茶小罐">
+              查看推荐：金花茯茶小罐
+            </button>
+          </article>
+
+          <article class="min-w-[280px] snap-start rounded-2xl border border-emerald-900/12 bg-white/80 p-4 shadow-sm md:min-w-[340px]">
+            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=80" alt="手作匠人 林阿姨" class="h-44 w-full rounded-xl object-cover" />
+            <h3 class="mt-3 font-heading text-xl text-emerald-950">林阿姨｜院落手作师</h3>
+            <p class="mt-2 text-sm leading-relaxed text-emerald-900/80">“我把院墙纹样缝进帆布袋里，让你走到哪里，都带着茯茶镇的风景。”</p>
+            <button class="maker-product-link mt-4 rounded-md border border-theme-gold/60 bg-theme-gold/10 px-3 py-2 text-sm font-semibold text-theme-text hover:bg-theme-gold/20" data-bazaar-tab="creative" data-product-name="茯茶镇帆布袋">
+              查看推荐：茯茶镇帆布袋
+            </button>
+          </article>
+
+          <article class="min-w-[280px] snap-start rounded-2xl border border-emerald-900/12 bg-white/80 p-4 shadow-sm md:min-w-[340px]">
+            <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&w=900&q=80" alt="文创设计师 赵老师" class="h-44 w-full rounded-xl object-cover" />
+            <h3 class="mt-3 font-heading text-xl text-emerald-950">赵老师｜戏文创作者</h3>
+            <p class="mt-2 text-sm leading-relaxed text-emerald-900/80">“手账不是纪念品，是你和这场戏共同完成的第二幕。”</p>
+            <button class="maker-product-link mt-4 rounded-md border border-theme-gold/60 bg-theme-gold/10 px-3 py-2 text-sm font-semibold text-theme-text hover:bg-theme-gold/20" data-bazaar-tab="creative" data-product-name="戏剧节手账">
+              查看推荐：戏剧节手账
+            </button>
+          </article>
+
+          <article class="min-w-[280px] snap-start rounded-2xl border border-emerald-900/12 bg-white/80 p-4 shadow-sm md:min-w-[340px]">
+            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80" alt="制茶传承人 陈师姐" class="h-44 w-full rounded-xl object-cover" />
+            <h3 class="mt-3 font-heading text-xl text-emerald-950">陈师姐｜非遗礼盒主理人</h3>
+            <p class="mt-2 text-sm leading-relaxed text-emerald-900/80">“礼盒里装的不只是茶，更是一份能被带回家的戏剧记忆。”</p>
+            <button class="maker-product-link mt-4 rounded-md border border-theme-gold/60 bg-theme-gold/10 px-3 py-2 text-sm font-semibold text-theme-text hover:bg-theme-gold/20" data-bazaar-tab="tea" data-product-name="非遗礼盒装茯茶">
+              查看推荐：非遗礼盒装茯茶
+            </button>
+          </article>
         </div>
       </section>
     </main>
@@ -519,6 +705,9 @@
       <ul id="cart-items" class="max-h-[58vh] space-y-3 overflow-y-auto pr-1 text-sm md:max-h-[62vh]">
         <li class="empty-cart rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂未选择票种</li>
       </ul>
+      <p id="cart-tea-tip" class="mt-3 hidden rounded-lg border border-theme-gold/60 bg-[#d4a95c]/12 px-3 py-2 text-xs text-emerald-900/85">
+        带上一份好茶观戏更配哦，推荐前往「文化集市」加购。
+      </p>
       <div class="mt-5 border-t border-emerald-900/15 pt-4">
         <div class="flex items-center justify-between">
           <span class="text-sm text-emerald-900/80">合计</span>
@@ -784,8 +973,31 @@
 
       const programTabs = document.querySelectorAll(".program-tab-btn");
       const programCardGrid = document.getElementById("program-card-grid");
+      const userCenterSection = document.getElementById("user-center");
+      const userTabButtons = document.querySelectorAll(".user-tab-btn");
+      const userCenterPanels = document.querySelectorAll(".uc-panel");
+      const userTicketRecordsElement = document.getElementById("user-ticket-records");
+      const dramaLevelBadgeElement = document.getElementById("drama-level-badge");
+      const dramaLevelNameElement = document.getElementById("drama-level-name");
+      const dramaLevelScoreElement = document.getElementById("drama-level-score");
+      const dramaLevelCurrentElement = document.getElementById("drama-level-current");
+      const dramaLevelNextElement = document.getElementById("drama-level-next");
+      const dramaProgressBarElement = document.getElementById("drama-progress-bar");
+      const dramaLevelPerksElement = document.getElementById("drama-level-perks");
+      const reviewShowSelect = document.getElementById("review-show-select");
+      const reviewRatingSelect = document.getElementById("review-rating-select");
+      const reviewContentInput = document.getElementById("review-content-input");
+      const submitReviewButton = document.getElementById("submit-review-btn");
+      const reviewListElement = document.getElementById("review-list");
+      const watchlistListElement = document.getElementById("watchlist-list");
       const ticketsSection = document.getElementById("tickets");
       const selectedShowBriefElement = document.getElementById("selected-show-brief");
+      const culturalBazaarSection = document.getElementById("cultural-bazaar");
+      const meetMakersSection = document.getElementById("meet-makers");
+      const bazaarTabs = document.querySelectorAll(".bazaar-tab-btn");
+      const bazaarCardGrid = document.getElementById("bazaar-card-grid");
+      const addDramaTeaBundleButton = document.getElementById("add-drama-tea-bundle");
+      const bundleDescElement = document.getElementById("bundle-desc");
 
       const addToCartButtons = document.querySelectorAll(".add-to-cart");
       const quantityModalButtons = document.querySelectorAll(".open-quantity-modal");
@@ -796,10 +1008,12 @@
       const cartItemsElement = document.getElementById("cart-items");
       const cartTotalElement = document.getElementById("cart-total");
       const cartCountElement = document.getElementById("cart-count");
+      const openUserCenterButton = document.getElementById("open-user-center");
       const cartButton = document.getElementById("open-cart");
       const closeCartButton = document.getElementById("close-cart");
       const cartDrawer = document.getElementById("cart-drawer");
       const cartBackdrop = document.getElementById("cart-backdrop");
+      const cartTeaTipElement = document.getElementById("cart-tea-tip");
 
       const openCheckoutButton = document.getElementById("open-checkout");
       const checkoutPanel = document.getElementById("checkout-panel");
@@ -874,6 +1088,36 @@
         { tag: "street", title: "《市集戏场》", time: "2026.03.25 17:30", venue: "茯茶文化广场", price: 80, isHot: false, image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80" },
         { tag: "courtyard", title: "《院门听戏》", time: "2026.03.25 20:00", venue: "关中民俗院落", price: 80, isHot: true, image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=900&q=80" },
       ];
+      const bazaarData = [
+        {
+          tag: "creative",
+          name: "戏剧节手账",
+          desc: "关中手作，茶香入魂",
+          price: 68,
+          image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          tag: "creative",
+          name: "茯茶镇帆布袋",
+          desc: "院落纹样，轻装入戏",
+          price: 49,
+          image: "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          tag: "tea",
+          name: "金花茯茶小罐",
+          desc: "陈香柔顺，观戏更配",
+          price: 88,
+          image: "https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          tag: "tea",
+          name: "非遗礼盒装茯茶",
+          desc: "礼敬匠心，茶礼成章",
+          price: 198,
+          image: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=900&q=80",
+        },
+      ];
 
       const seatCols = 12;
       const seatRows = 6;
@@ -900,6 +1144,7 @@
       };
 
       let activeProgramTag = "all";
+      let activeBazaarTag = "creative";
       let selectedSeat = null;
       let selectedPackageMeta = null;
       let selectedPackageQuantity = 1;
@@ -911,6 +1156,24 @@
       let codeLeft = 0;
       let currentScheduleMonth = new Date(2026, 2, 1);
       let selectedScheduleDateKey = "2026-03-21";
+      const profileState = {
+        dramaValue: Number(window.localStorage.getItem("fucha_drama_value") || "0") || 0,
+        ticketRecords: [],
+        reviews: [],
+        watchlist: [],
+      };
+      const parseStoredArray = (key) => {
+        try {
+          const raw = window.localStorage.getItem(key);
+          const parsed = raw ? JSON.parse(raw) : [];
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      };
+      profileState.ticketRecords = parseStoredArray("fucha_ticket_records");
+      profileState.reviews = parseStoredArray("fucha_reviews");
+      profileState.watchlist = parseStoredArray("fucha_watchlist");
 
       const viewportState = {
         scale: 1,
@@ -948,6 +1211,140 @@
             option.classList.remove("border-theme-emerald", "bg-emerald-50/70", "ring-1", "ring-theme-emerald/20");
           }
         });
+      };
+      const getDramaLevelMeta = (value) => {
+        if (value >= 900) {
+          return {
+            name: "茶戏大师",
+            badge: "🥇",
+            min: 900,
+            max: 1400,
+            perks: ["大师席优先选座", "限定茶礼 85 折", "线下匠人见面会优先名额"],
+          };
+        }
+        if (value >= 300) {
+          return {
+            name: "爱戏人",
+            badge: "🥈",
+            min: 300,
+            max: 900,
+            perks: ["优先购票提醒", "文化集市专属折扣", "戏茶同享套餐加赠茶点"],
+          };
+        }
+        return {
+          name: "初学者",
+          badge: "🥉",
+          min: 0,
+          max: 300,
+          perks: ["新手入戏礼包", "观演指南与行程推荐", "茶礼加购提示服务"],
+        };
+      };
+      const saveProfileState = () => {
+        window.localStorage.setItem("fucha_drama_value", String(profileState.dramaValue));
+        window.localStorage.setItem("fucha_ticket_records", JSON.stringify(profileState.ticketRecords));
+        window.localStorage.setItem("fucha_reviews", JSON.stringify(profileState.reviews));
+        window.localStorage.setItem("fucha_watchlist", JSON.stringify(profileState.watchlist));
+      };
+      const setActiveUserTab = (target) => {
+        userTabButtons.forEach((btn) => {
+          const active = btn.dataset.ucTab === target;
+          btn.classList.toggle("bg-theme-emerald", active);
+          btn.classList.toggle("text-emerald-50", active);
+          btn.classList.toggle("text-theme-text", !active);
+        });
+        userCenterPanels.forEach((panel) => {
+          panel.classList.toggle("hidden", panel.id !== `uc-panel-${target}`);
+        });
+      };
+      const renderUserTicketRecords = () => {
+        userTicketRecordsElement.innerHTML = "";
+        if (!profileState.ticketRecords.length) {
+          userTicketRecordsElement.innerHTML = '<li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂无购票记录</li>';
+          return;
+        }
+        profileState.ticketRecords.forEach((record) => {
+          const li = document.createElement("li");
+          li.className = "rounded-lg border border-emerald-900/10 bg-white px-3 py-3";
+          li.innerHTML = `
+            <div class="flex items-center justify-between gap-3">
+              <p class="font-semibold text-emerald-950">订单 ${record.orderNo}</p>
+              <span class="text-xs text-emerald-900/65">${record.paidAt}</span>
+            </div>
+            <p class="mt-1 text-xs text-emerald-900/75">${record.items}</p>
+            <p class="mt-1 text-sm font-semibold text-emerald-900">实付：${formatPrice(record.total)}</p>
+          `;
+          userTicketRecordsElement.appendChild(li);
+        });
+      };
+      const renderReviewOptions = () => {
+        reviewShowSelect.innerHTML = '<option value="">选择剧目</option>';
+        programData.forEach((program) => {
+          const opt = document.createElement("option");
+          opt.value = program.title;
+          opt.textContent = `${program.title}｜${program.time}`;
+          reviewShowSelect.appendChild(opt);
+        });
+      };
+      const renderReviews = () => {
+        reviewListElement.innerHTML = "";
+        if (!profileState.reviews.length) {
+          reviewListElement.innerHTML = '<li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">还没有戏评，去写下第一条吧。</li>';
+          return;
+        }
+        profileState.reviews.forEach((review, idx) => {
+          const li = document.createElement("li");
+          li.className = "rounded-lg border border-emerald-900/10 bg-white px-3 py-3";
+          li.innerHTML = `
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-semibold text-emerald-950">${review.show}</p>
+              <button class="remove-review rounded px-2 py-1 text-xs text-emerald-800 hover:bg-emerald-50" data-index="${idx}">删除</button>
+            </div>
+            <p class="mt-1 text-xs text-emerald-900/70">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)} · ${review.createdAt}</p>
+            <p class="mt-1 text-sm text-emerald-900/85">${review.content}</p>
+          `;
+          reviewListElement.appendChild(li);
+        });
+      };
+      const renderWatchlist = () => {
+        watchlistListElement.innerHTML = "";
+        if (!profileState.watchlist.length) {
+          watchlistListElement.innerHTML = '<li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂无想看剧目，去剧目页添加吧。</li>';
+          return;
+        }
+        profileState.watchlist.forEach((item, idx) => {
+          const li = document.createElement("li");
+          li.className = "rounded-lg border border-emerald-900/10 bg-white px-3 py-3";
+          li.innerHTML = `
+            <p class="font-semibold text-emerald-950">${item.show}</p>
+            <p class="mt-1 text-xs text-emerald-900/75">${item.time}｜${item.venue}</p>
+            <div class="mt-2 flex items-center gap-2">
+              <button class="wish-buy btn-emerald-ux rounded-md px-3 py-1.5 text-xs font-semibold" data-show="${item.show}" data-time="${item.time}" data-venue="${item.venue}">去购票</button>
+              <button class="wish-remove rounded-md border border-emerald-900/20 px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50" data-index="${idx}">移除</button>
+            </div>
+          `;
+          watchlistListElement.appendChild(li);
+        });
+      };
+      const renderUserCenter = () => {
+        if (!isLoggedIn) {
+          userCenterSection.classList.add("hidden");
+          return;
+        }
+        userCenterSection.classList.remove("hidden");
+        const level = getDramaLevelMeta(profileState.dramaValue);
+        const nextNeed = Math.max(0, level.max - profileState.dramaValue);
+        const progressRaw = ((profileState.dramaValue - level.min) / Math.max(1, level.max - level.min)) * 100;
+        const progress = Math.min(100, Math.max(0, progressRaw));
+        dramaLevelBadgeElement.textContent = level.badge;
+        dramaLevelNameElement.textContent = level.name;
+        dramaLevelScoreElement.textContent = `入戏值 ${profileState.dramaValue}`;
+        dramaLevelCurrentElement.textContent = `当前等级：${level.name}`;
+        dramaLevelNextElement.textContent = nextNeed > 0 ? `距离下一等级还需 ${nextNeed}` : "已达最高等级";
+        dramaProgressBarElement.style.width = `${progress}%`;
+        dramaLevelPerksElement.innerHTML = level.perks.map((perk) => `<li>• ${perk}</li>`).join("");
+        renderUserTicketRecords();
+        renderReviews();
+        renderWatchlist();
       };
       const buildShowPurchaseUrl = (show, time, venue) => {
         const url = new URL(window.location.href);
@@ -1071,6 +1468,8 @@
 
       const completeAuthAndContinue = () => {
         isLoggedIn = true;
+        setActiveUserTab("records");
+        renderUserCenter();
         closeAuthModal();
         if (pendingPurchaseAction) {
           const next = pendingPurchaseAction;
@@ -1106,6 +1505,15 @@
           btn.classList.toggle("text-theme-text", !active);
         });
       };
+      const setActiveBazaarTab = (target) => {
+        activeBazaarTag = target;
+        bazaarTabs.forEach((btn) => {
+          const active = btn.dataset.bazaarTab === target;
+          btn.classList.toggle("bg-theme-emerald", active);
+          btn.classList.toggle("text-emerald-50", active);
+          btn.classList.toggle("text-theme-text", !active);
+        });
+      };
 
       const createProgramCard = (item, idx) => {
         const article = document.createElement("article");
@@ -1123,7 +1531,12 @@
             </div>
             <p class="text-sm text-emerald-900/80">演出时间：${item.time}</p>
             <p class="text-sm text-emerald-900/80">演出地点：${item.venue}</p>
-            <p class="font-semibold text-emerald-900">票价：￥${item.price}起</p>
+            <div class="mt-1 flex items-center justify-between gap-2">
+              <p class="font-semibold text-emerald-900">票价：￥${item.price}起</p>
+              <button class="add-watchlist-btn rounded-md border border-emerald-900/20 px-2.5 py-1 text-xs font-semibold text-emerald-900 hover:bg-emerald-50" data-show="${item.title}" data-show-time="${item.time}" data-show-venue="${item.venue}">
+                想看
+              </button>
+            </div>
           </div>
           <div class="pointer-events-none mt-2 px-4 pb-4 md:absolute md:inset-x-4 md:bottom-4 md:mt-0 md:px-0 md:pb-0 md:opacity-0 md:translate-y-2 md:transition md:group-hover:translate-y-0 md:group-hover:opacity-100">
             <button class="choose-show-btn pointer-events-auto w-full rounded-md bg-theme-gold px-4 py-2.5 font-semibold text-theme-text" data-show="${item.title}" data-show-time="${item.time}" data-show-venue="${item.venue}">立即购票</button>
@@ -1139,6 +1552,50 @@
           filtered.forEach((item, idx) => programCardGrid.appendChild(createProgramCard(item, idx)));
         });
       };
+      const createBazaarCard = (item, idx) => {
+        const article = document.createElement("article");
+        article.className =
+          "group relative overflow-hidden rounded-2xl border border-emerald-900/12 bg-white/80 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/10 animate-in";
+        article.style.animationDelay = `${idx * 65}ms`;
+        article.dataset.productName = item.name;
+        article.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" class="h-44 w-full object-cover" />
+          <div class="space-y-2 p-4">
+            <h3 class="font-heading text-xl text-emerald-950">${item.name}</h3>
+            <p class="text-sm text-emerald-900/75">${item.desc}</p>
+            <div class="mt-3 flex items-center justify-between">
+              <p class="text-lg font-bold text-emerald-900">${formatPrice(item.price)}</p>
+              <button
+                class="add-bazaar-to-cart btn-emerald-ux rounded-md px-3 py-2 text-xs font-semibold"
+                data-item="${item.name}"
+                data-price="${item.price}"
+                data-type="${item.tag === "tea" ? "精品茯茶" : "文创周边"}"
+              >
+                加入茶袋
+              </button>
+            </div>
+          </div>
+        `;
+        return article;
+      };
+      const renderBazaarCards = () => {
+        const filtered = bazaarData.filter((item) => item.tag === activeBazaarTag);
+        requestAnimationFrame(() => {
+          bazaarCardGrid.innerHTML = "";
+          filtered.forEach((item, idx) => bazaarCardGrid.appendChild(createBazaarCard(item, idx)));
+        });
+      };
+      const highlightBazaarCardByName = (productName) => {
+        if (!productName) return;
+        const cards = [...bazaarCardGrid.querySelectorAll("article[data-product-name]")];
+        const target = cards.find((card) => card.dataset.productName === productName);
+        if (!target) return;
+        target.classList.add("ring-2", "ring-theme-gold", "ring-offset-2", "ring-offset-[#d1fae5]");
+        target.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        window.setTimeout(() => {
+          target.classList.remove("ring-2", "ring-theme-gold", "ring-offset-2", "ring-offset-[#d1fae5]");
+        }, 1300);
+      };
 
       programTabs.forEach((tab) => {
         tab.addEventListener("click", () => {
@@ -1146,15 +1603,55 @@
           renderProgramCards();
         });
       });
+      bazaarTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          setActiveBazaarTab(tab.dataset.bazaarTab);
+          renderBazaarCards();
+        });
+      });
+      userTabButtons.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          setActiveUserTab(tab.dataset.ucTab);
+        });
+      });
 
       const selectShowAndRevealTickets = (show, showTime, showVenue) => {
         cartState.selectedShow = { show, time: showTime, venue: showVenue };
         selectedShowBriefElement.textContent = `已选剧目：${show}｜${showTime}｜${showVenue}`;
+        bundleDescElement.textContent = `已解锁：${show} 专属戏剧限定茶礼，当前下单享 8 折。`;
         ticketsSection.classList.remove("hidden");
         ticketsSection.scrollIntoView({ behavior: "smooth", block: "start" });
       };
 
       programCardGrid.addEventListener("click", (event) => {
+        const wishButton = event.target.closest(".add-watchlist-btn");
+        if (wishButton) {
+          if (!isLoggedIn) {
+            requireAuthForPurchase(() => {});
+            return;
+          }
+          const exists = profileState.watchlist.some(
+            (item) =>
+              item.show === wishButton.dataset.show &&
+              item.time === wishButton.dataset.showTime &&
+              item.venue === wishButton.dataset.showVenue
+          );
+          if (!exists) {
+            profileState.watchlist.unshift({
+              show: wishButton.dataset.show,
+              time: wishButton.dataset.showTime,
+              venue: wishButton.dataset.showVenue,
+            });
+            profileState.watchlist = profileState.watchlist.slice(0, 30);
+            saveProfileState();
+            renderUserCenter();
+          }
+          wishButton.textContent = "已加入";
+          window.setTimeout(() => {
+            wishButton.textContent = "想看";
+          }, 1000);
+          return;
+        }
         const button = event.target.closest(".choose-show-btn");
         if (!button) return;
         requireAuthForPurchase(() => {
@@ -1168,6 +1665,84 @@
         requireAuthForPurchase(() => {
           selectShowAndRevealTickets(button.dataset.show, button.dataset.showTime, button.dataset.showVenue);
         });
+      });
+      bazaarCardGrid.addEventListener("click", (event) => {
+        const button = event.target.closest(".add-bazaar-to-cart");
+        if (!button) return;
+        const kind = button.dataset.type === "精品茯茶" ? "tea" : "creative";
+        upsertCartItem(
+          button.dataset.item,
+          Number(button.dataset.price),
+          { time: "文化集市现货", meta: button.dataset.type, kind }
+        );
+        animateFlyToCart(button, "茶袋");
+        lockButtonFeedback(button);
+        openCart();
+        renderCart();
+      });
+      meetMakersSection.addEventListener("click", (event) => {
+        const button = event.target.closest(".maker-product-link");
+        if (!button) return;
+        const tab = button.dataset.bazaarTab;
+        const productName = button.dataset.productName;
+        if (!tab) return;
+        setActiveBazaarTab(tab);
+        renderBazaarCards();
+        culturalBazaarSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            highlightBazaarCardByName(productName);
+          });
+        });
+      });
+      watchlistListElement.addEventListener("click", (event) => {
+        const removeBtn = event.target.closest(".wish-remove");
+        if (removeBtn) {
+          profileState.watchlist.splice(Number(removeBtn.dataset.index), 1);
+          saveProfileState();
+          renderUserCenter();
+          return;
+        }
+        const buyBtn = event.target.closest(".wish-buy");
+        if (!buyBtn) return;
+        requireAuthForPurchase(() => {
+          selectShowAndRevealTickets(buyBtn.dataset.show, buyBtn.dataset.time, buyBtn.dataset.venue);
+          ticketsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+      submitReviewButton.addEventListener("click", () => {
+        if (!isLoggedIn) {
+          requireAuthForPurchase(() => {});
+          return;
+        }
+        const show = reviewShowSelect.value.trim();
+        const content = reviewContentInput.value.trim();
+        const rating = Number(reviewRatingSelect.value || "5");
+        if (!show || !content) {
+          runInputError(reviewShowSelect);
+          runInputError(reviewContentInput);
+          return;
+        }
+        profileState.reviews.unshift({
+          show,
+          content,
+          rating: Math.max(1, Math.min(5, rating)),
+          createdAt: new Date().toLocaleString("zh-CN"),
+        });
+        profileState.reviews = profileState.reviews.slice(0, 50);
+        profileState.dramaValue += 8;
+        saveProfileState();
+        reviewContentInput.value = "";
+        renderUserCenter();
+        setActiveUserTab("reviews");
+      });
+      reviewListElement.addEventListener("click", (event) => {
+        const removeBtn = event.target.closest(".remove-review");
+        if (!removeBtn) return;
+        profileState.reviews.splice(Number(removeBtn.dataset.index), 1);
+        saveProfileState();
+        renderUserCenter();
+        setActiveUserTab("reviews");
       });
 
       const getCartTotal = () => cartState.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -1208,7 +1783,14 @@
         if (existing) {
           existing.quantity += quantity;
         } else {
-          cartState.items.push({ name, price, quantity, time: details.time, meta: details.meta });
+          cartState.items.push({
+            name,
+            price,
+            quantity,
+            time: details.time,
+            meta: details.meta,
+            kind: details.kind || "ticket",
+          });
         }
       };
 
@@ -1221,7 +1803,8 @@
         cartItemsElement.innerHTML = "";
 
         if (!cartState.items.length) {
-          cartItemsElement.innerHTML = '<li class="empty-cart rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂未选择票种</li>';
+          cartItemsElement.innerHTML = '<li class="empty-cart rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂未选择票种或商品</li>';
+          cartTeaTipElement.classList.add("hidden");
           cartTotalElement.textContent = "¥0";
           cartCountElement.textContent = "0";
           renderCheckout();
@@ -1244,10 +1827,14 @@
                 </div>
               </div>
               <div class="mt-1 text-xs text-emerald-900/70">时间：${item.time}</div>
+              <div class="mt-1 text-xs text-emerald-900/70">类型：${item.meta}</div>
               <div class="mt-1 text-xs text-emerald-900/70">数量 x ${item.quantity}</div>
             `;
             cartItemsElement.appendChild(li);
           });
+          const hasTicket = cartState.items.some((item) => item.kind === "ticket");
+          const hasTeaOrCreative = cartState.items.some((item) => item.kind === "tea" || item.kind === "creative" || item.kind === "bundle");
+          cartTeaTipElement.classList.toggle("hidden", !(hasTicket && !hasTeaOrCreative));
           cartTotalElement.textContent = formatPrice(getCartTotal());
           cartCountElement.textContent = String(count);
           renderCheckout();
@@ -1259,7 +1846,7 @@
       const renderCheckout = () => {
         checkoutItemsElement.innerHTML = "";
         if (!cartState.items.length) {
-          checkoutItemsElement.innerHTML = '<li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">请先在页面中选择票种</li>';
+          checkoutItemsElement.innerHTML = '<li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">请先在页面中选择票种或文创商品</li>';
           checkoutTotalElement.textContent = "¥0";
           return;
         }
@@ -1291,7 +1878,7 @@
           const { item, price, time, type } = button.dataset;
           const finalTime = cartState.selectedShow && type === "单场票" ? cartState.selectedShow.time : time;
           const finalMeta = cartState.selectedShow && type === "单场票" ? `${type} · ${cartState.selectedShow.show}` : type;
-          upsertCartItem(item, Number(price), { time: finalTime, meta: finalMeta });
+          upsertCartItem(item, Number(price), { time: finalTime, meta: finalMeta, kind: "ticket" });
           animateFlyToCart(button, "入篮");
           lockButtonFeedback(button);
           renderCart();
@@ -1354,7 +1941,7 @@
         upsertCartItem(
           selectedPackageMeta.item,
           selectedPackageMeta.price,
-          { time: selectedPackageMeta.time, meta: selectedPackageMeta.type },
+          { time: selectedPackageMeta.time, meta: selectedPackageMeta.type, kind: "bundle" },
           selectedPackageQuantity
         );
         animateFlyToCart(confirmQuantityBuyButton, `x${selectedPackageQuantity}`);
@@ -1469,7 +2056,7 @@
         const meta = cartState.selectedShow
           ? `${cartState.selectedShow.show} · ${selectedSeat.id}`
           : selectedSeat.id;
-        upsertCartItem("VIP前排票", selectedSeat.price, { time, meta });
+        upsertCartItem("VIP前排票", selectedSeat.price, { time, meta, kind: "ticket" });
         animateFlyToCart(confirmVipSeatButton, "VIP");
         lockButtonFeedback(confirmVipSeatButton);
         closeSeatModal();
@@ -1532,12 +2119,34 @@
 
       upsellAddButton.addEventListener("click", () => {
         if (!cartState.upsellAdded) {
-          upsertCartItem("非遗茶礼套餐升级", 20, { time: "演出期间", meta: "Upsell" }, 1);
+          upsertCartItem("非遗茶礼套餐升级", 20, { time: "演出期间", meta: "Upsell", kind: "bundle" }, 1);
           cartState.upsellAdded = true;
           renderCart();
         }
         closeUpsell();
         openCheckoutPanel();
+      });
+      addDramaTeaBundleButton.addEventListener("click", () => {
+        if (!cartState.selectedShow) {
+          bundleDescElement.textContent = "请先在上方选择一个剧目场次，再解锁戏剧限定茶礼。";
+          ticketsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+        const show = cartState.selectedShow;
+        upsertCartItem(
+          "戏剧限定茶礼（8折）",
+          150,
+          {
+            time: show.time,
+            meta: `戏茶同享 · ${show.show}`,
+            kind: "bundle",
+          },
+          1
+        );
+        animateFlyToCart(addDramaTeaBundleButton, "礼盒");
+        lockButtonFeedback(addDramaTeaBundleButton);
+        openCart();
+        renderCart();
       });
 
       const minimizeCheckout = () => {
@@ -1602,6 +2211,21 @@
         if (ticketPhoneInput.value.trim()) {
           window.localStorage.setItem("fucha_contact", ticketPhoneInput.value.trim());
         }
+        const totalAmount = getCartTotal();
+        const summary = cartState.items
+          .map((item) => `${item.name} x${item.quantity}`)
+          .join("；");
+        profileState.ticketRecords.unshift({
+          orderNo: `FC${Date.now().toString().slice(-8)}`,
+          paidAt: new Date().toLocaleString("zh-CN"),
+          items: summary,
+          total: totalAmount,
+        });
+        profileState.ticketRecords = profileState.ticketRecords.slice(0, 30);
+        const gain = Math.max(20, Math.round(totalAmount * 0.2));
+        profileState.dramaValue += gain;
+        saveProfileState();
+        renderUserCenter();
         minimizeCheckout();
         openSuccess();
         confirmPaymentButton.disabled = false;
@@ -1931,6 +2555,13 @@
       closeCartButton.addEventListener("click", closeCart);
       cartBackdrop.addEventListener("click", closeCart);
       cartButton.addEventListener("click", openCart);
+      openUserCenterButton.addEventListener("click", () => {
+        requireAuthForPurchase(() => {
+          setActiveUserTab("records");
+          renderUserCenter();
+          userCenterSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
       minimizeCheckoutButton.addEventListener("click", minimizeCheckout);
       minimizedCheckoutButton.addEventListener("click", openCheckoutPanel);
       checkoutPanel.addEventListener("click", (event) => {
@@ -1949,15 +2580,20 @@
 
       requestAnimationFrame(() => {
         refreshPayOptionStyles();
+        renderReviewOptions();
+        setActiveUserTab("records");
         document.querySelectorAll('input[name="pay"]').forEach((input) => {
           input.addEventListener("change", refreshPayOptionStyles);
         });
         setActiveProgramTab("all");
+        setActiveBazaarTab("creative");
         renderProgramCards();
+        renderBazaarCards();
         renderSeatGrid();
         renderSeatSummary();
         renderCart();
         renderCheckout();
+        renderUserCenter();
         syncSelectedDateToMonth();
         renderScheduleCalendar();
         renderScheduleDayEvents();
