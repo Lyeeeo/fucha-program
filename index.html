@@ -958,10 +958,10 @@
         return url.toString();
       };
       const buildWalletPassUrl = (show, time, venue, seat) => {
-        const url = new URL(window.location.href);
-        url.pathname = "/passes/fucha-ticket.pkpass";
-        url.search = "";
-        url.hash = "";
+        const base = window.location.origin && window.location.origin !== "null"
+          ? window.location.origin
+          : "https://fucha-theatre.example.com";
+        const url = new URL("/passes/fucha-ticket.pkpass", base);
         url.searchParams.set("show", show);
         url.searchParams.set("time", time);
         url.searchParams.set("venue", venue);
@@ -970,8 +970,7 @@
       };
       const buildGoogleWalletUrl = (show, time, venue, seat) => {
         const continueUrl = buildShowPurchaseUrl(show, time, venue);
-        const detail = encodeURIComponent(`${show} ${time} ${venue} ${seat || "电子票"}`);
-        return `https://pay.google.com/gp/w/u/0/home/signup?continue=${encodeURIComponent(continueUrl)}&hl=zh-CN&source=${detail}`;
+        return `https://wallet.google.com/?continue=${encodeURIComponent(continueUrl)}`;
       };
 
       const scheduleEvents = programData.map((item) => ({
@@ -1679,7 +1678,8 @@
 
         if (isIOSMobile()) {
           addWalletBtn.textContent = "正在打开 Apple 钱包...";
-          window.location.href = passUrl;
+          const opened = window.open(passUrl, "_blank", "noopener,noreferrer");
+          if (!opened) window.location.assign(passUrl);
           window.setTimeout(() => {
             addWalletBtn.textContent = originalText;
           }, 1200);
@@ -1688,7 +1688,8 @@
 
         if (isAndroidMobile()) {
           addWalletBtn.textContent = "正在打开 Google Wallet...";
-          window.open(googleWalletUrl, "_blank", "noopener,noreferrer");
+          const opened = window.open(googleWalletUrl, "_blank", "noopener,noreferrer");
+          if (!opened) window.location.assign(googleWalletUrl);
           window.setTimeout(() => {
             addWalletBtn.textContent = originalText;
           }, 1200);
@@ -1745,11 +1746,20 @@
           "END:VEVENT\r\n" +
           "END:VCALENDAR\r\n";
         const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+        const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
+        link.href = blobUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
         link.download = "fucha-ticket-event.ics";
+        document.body.appendChild(link);
         link.click();
-        URL.revokeObjectURL(link.href);
+        link.remove();
+        if (isIOSMobile() || isAndroidMobile()) {
+          const opened = window.open(blobUrl, "_blank", "noopener,noreferrer");
+          if (!opened) window.location.assign(blobUrl);
+        }
+        window.setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
         addCalendarBtn.textContent = "已添加日历文件";
         window.setTimeout(() => {
           addCalendarBtn.textContent = "添加到日历";
