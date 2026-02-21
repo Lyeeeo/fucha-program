@@ -1051,7 +1051,7 @@
       const createProgramCard = (item, idx) => {
         const article = document.createElement("article");
         article.className =
-          "program-card group relative overflow-hidden rounded-2xl border border-emerald-900/10 bg-white/80 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/10 animate-in";
+          "program-card group relative overflow-hidden rounded-2xl border border-emerald-900/10 bg-white/80 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/10 animate-in md:pb-14";
         article.style.animationDelay = `${idx * 70}ms`;
         article.dataset.programCategory = item.tag;
 
@@ -1066,7 +1066,7 @@
             <p class="text-sm text-emerald-900/80">演出地点：${item.venue}</p>
             <p class="font-semibold text-emerald-900">票价：￥${item.price}起</p>
           </div>
-          <div class="pointer-events-none absolute inset-x-4 bottom-4 opacity-100 transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+          <div class="pointer-events-none mt-2 px-4 pb-4 md:absolute md:inset-x-4 md:bottom-4 md:mt-0 md:px-0 md:pb-0 md:opacity-0 md:translate-y-2 md:transition md:group-hover:translate-y-0 md:group-hover:opacity-100">
             <button class="choose-show-btn pointer-events-auto w-full rounded-md bg-theme-gold px-4 py-2.5 font-semibold text-theme-text" data-show="${item.title}" data-show-time="${item.time}" data-show-venue="${item.venue}">立即购票</button>
           </div>
         `;
