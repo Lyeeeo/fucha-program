@@ -1,0 +1,1728 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>茯茶镇戏剧节 官方购票平台</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              heading: ['"Noto Serif SC"', "serif"],
+              body: ['"Source Sans 3"', "sans-serif"],
+            },
+            colors: {
+              theme: {
+                bg: "#d1fae5",
+                text: "#052e22",
+                gold: "#d4a95c",
+                emerald: "#047857",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .hero-parallax {
+        background-image:
+          linear-gradient(rgba(5, 46, 34, 0.5), rgba(5, 46, 34, 0.6)),
+          url("https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&w=1920&q=80");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      @media (max-width: 768px) {
+        .hero-parallax {
+          background-attachment: scroll;
+        }
+      }
+
+      .no-scroll {
+        overflow: hidden;
+      }
+
+      @keyframes breathe {
+        0% {
+          box-shadow: 0 0 0 0 rgba(4, 120, 87, 0.35);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(4, 120, 87, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(4, 120, 87, 0);
+        }
+      }
+
+      .btn-breathe {
+        animation: breathe 2.2s ease-in-out infinite;
+      }
+
+      @keyframes cart-pop {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.22);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .cart-pop {
+        animation: cart-pop 380ms ease;
+      }
+
+      .cart-fly-token {
+        position: fixed;
+        z-index: 80;
+        border-radius: 9999px;
+        background: #d4a95c;
+        color: #052e22;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 7px 10px;
+        pointer-events: none;
+        box-shadow: 0 8px 24px rgba(5, 46, 34, 0.2);
+      }
+
+      .main-soft-blur {
+        filter: blur(3px);
+        transition: filter 0.35s ease;
+      }
+
+      .btn-emerald-ux {
+        background: #047857;
+        color: #fff;
+        transition: background-color 0.4s ease;
+      }
+      .btn-emerald-ux:hover {
+        background: #064e3b;
+      }
+
+      @keyframes gold-glow {
+        0% {
+          opacity: 0.7;
+          box-shadow: 0 0 0 rgba(212, 169, 92, 0);
+        }
+        50% {
+          opacity: 1;
+          box-shadow: 0 0 14px rgba(212, 169, 92, 0.22);
+        }
+        100% {
+          opacity: 0.7;
+          box-shadow: 0 0 0 rgba(212, 169, 92, 0);
+        }
+      }
+      .recommend-badge {
+        animation: gold-glow 3.2s ease-in-out infinite;
+      }
+
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-in {
+        opacity: 0;
+        animation: fade-up 0.55s ease forwards;
+      }
+
+      .seat-viewport {
+        overflow: hidden;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(5, 46, 34, 0.12);
+        background: linear-gradient(180deg, #f8fffb 0%, #eafcf3 100%);
+        touch-action: none;
+      }
+      .seat-canvas {
+        transform-origin: 0 0;
+      }
+      .seat-dot {
+        width: 24px;
+        height: 24px;
+        border-radius: 9999px;
+      }
+      .seat-sold {
+        background: #9ca3af;
+      }
+      .seat-normal {
+        background: #86efac;
+      }
+      .seat-vip {
+        background: #d4a95c;
+      }
+      .seat-selected {
+        background: #047857;
+      }
+
+      @keyframes ticket-handin {
+        0% {
+          opacity: 0;
+          transform: translateY(16px) scale(0.95);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .ticket-enter {
+        animation: ticket-handin 420ms ease;
+      }
+      .ticket-paper {
+        background:
+          radial-gradient(circle at 12% 14%, rgba(212, 169, 92, 0.16), transparent 34%),
+          radial-gradient(circle at 86% 80%, rgba(4, 120, 87, 0.1), transparent 32%),
+          repeating-linear-gradient(90deg, rgba(5, 46, 34, 0.04) 0 2px, transparent 2px 12px),
+          repeating-linear-gradient(0deg, rgba(5, 46, 34, 0.03) 0 2px, transparent 2px 12px),
+          linear-gradient(145deg, transparent 0 70%, rgba(4, 120, 87, 0.05) 70% 71%, transparent 71% 100%),
+          linear-gradient(180deg, #fffef7 0%, #f7f2e4 100%);
+      }
+      .ticket-zigzag {
+        border-top: 1px dashed rgba(5, 46, 34, 0.28);
+        border-bottom: 1px dashed rgba(5, 46, 34, 0.28);
+        background-image: linear-gradient(135deg, rgba(212, 169, 92, 0.15) 25%, transparent 25%),
+          linear-gradient(225deg, rgba(212, 169, 92, 0.15) 25%, transparent 25%);
+        background-size: 10px 10px;
+        background-position: 0 0, 5px 0;
+      }
+      .ticket-seal {
+        box-shadow: 0 8px 20px rgba(212, 169, 92, 0.28);
+      }
+
+      @keyframes bg-breathe {
+        0% {
+          opacity: 0.75;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.03);
+        }
+        100% {
+          opacity: 0.75;
+          transform: scale(1);
+        }
+      }
+      @keyframes panel-rise {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes input-shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-3px);
+        }
+        75% {
+          transform: translateX(3px);
+        }
+      }
+      .login-bg-breathe {
+        animation: bg-breathe 5s ease-in-out infinite;
+      }
+      .panel-rise {
+        animation: panel-rise 360ms ease;
+      }
+      .input-error {
+        border-color: #dc2626 !important;
+      }
+      .input-shake {
+        animation: input-shake 220ms ease;
+      }
+    </style>
+  </head>
+  <body class="bg-theme-bg text-theme-text font-body antialiased">
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-emerald-900/10 bg-white/85 backdrop-blur">
+      <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <a href="#" class="font-heading text-base md:text-lg text-theme-text">茯茶镇戏剧节 官方购票平台</a>
+        <button
+          id="open-cart"
+          class="inline-flex items-center gap-2 rounded-full border border-theme-emerald px-3.5 py-1.5 text-xs md:text-sm font-semibold text-theme-text transition hover:bg-emerald-50"
+        >
+          购物车
+          <span id="cart-count" class="rounded-full bg-theme-gold px-2 py-0.5 text-xs text-theme-text">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content" class="pb-24 pt-16 md:pb-20">
+      <section class="hero-parallax relative min-h-screen overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-theme-text/70"></div>
+        <div class="relative mx-auto flex min-h-screen max-w-6xl items-center px-5 py-14 md:px-6 md:py-20">
+          <div class="max-w-3xl">
+            <p class="mb-4 inline-block border border-theme-gold/70 px-4 py-1 text-sm tracking-[0.2em] text-emerald-50/90">
+              FUCHA TOWN YOUTH THEATRE FESTIVAL
+            </p>
+            <h1 class="font-heading text-3xl leading-tight text-emerald-50 md:text-6xl">
+              茯茶镇青年戏剧节
+              <span class="mt-3 block text-theme-gold">在茶香中入戏</span>
+            </h1>
+            <p class="mt-5 max-w-2xl text-base text-emerald-50/90 md:mt-6 md:text-lg">
+              以院落与街巷为舞台，连接青年表达与城市记忆。即刻进入本届官方购票入口，选择你的戏剧现场。
+            </p>
+            <a
+              href="#schedule"
+              class="mt-8 inline-flex items-center rounded-md bg-theme-gold px-7 py-3.5 text-sm font-semibold text-theme-text shadow-lg shadow-theme-text/20 transition hover:-translate-y-0.5 hover:bg-[#e4bb72] focus:outline-none focus:ring-2 focus:ring-theme-gold focus:ring-offset-2 focus:ring-offset-theme-text md:mt-10 md:px-8 md:py-4 md:text-base"
+            >
+              立即选座购票
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="schedule" class="mx-auto max-w-6xl px-6 py-16 md:py-24">
+        <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <p class="text-sm uppercase tracking-[0.2em] text-emerald-800">演出排期</p>
+            <h2 class="mt-2 font-heading text-3xl md:text-4xl">剧目日历（月度视图）</h2>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+          <div class="rounded-2xl border border-emerald-900/10 bg-white/75 p-4 md:p-6">
+            <div class="mb-4 flex items-center justify-between">
+              <button id="schedule-prev-month" class="rounded-md border border-emerald-900/20 px-3 py-2 text-sm font-semibold text-theme-text hover:bg-emerald-50">
+                上一月
+              </button>
+              <h3 id="schedule-current-month" class="font-heading text-2xl"></h3>
+              <button id="schedule-next-month" class="rounded-md border border-emerald-900/20 px-3 py-2 text-sm font-semibold text-theme-text hover:bg-emerald-50">
+                下一月
+              </button>
+            </div>
+
+            <div class="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-emerald-900/70 md:text-sm">
+              <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+            </div>
+            <div id="schedule-calendar-grid" class="mt-2 grid grid-cols-7 gap-2"></div>
+          </div>
+
+          <div class="rounded-2xl border border-emerald-900/10 bg-white/75 p-4 md:p-6">
+            <h3 class="font-heading text-2xl">当日演出</h3>
+            <p id="schedule-selected-date" class="mt-1 text-sm text-emerald-900/70"></p>
+            <ul id="schedule-day-events" class="mt-4 space-y-3 text-sm">
+              <li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂无排期</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="program-grid" class="mx-auto max-w-6xl px-6 pb-20">
+        <div class="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="text-sm uppercase tracking-[0.2em] text-emerald-800">Program Selection</p>
+            <h2 class="mt-2 font-heading text-3xl md:text-4xl">剧目选购网格</h2>
+          </div>
+          <div
+            class="inline-flex w-full flex-nowrap overflow-x-auto rounded-xl border border-emerald-800/20 bg-white/50 p-1 backdrop-blur-sm md:w-auto"
+            role="tablist"
+            aria-label="剧目选购分类"
+          >
+            <button class="program-tab-btn shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition md:px-5" data-program-tab="all">
+              全部
+            </button>
+            <button class="program-tab-btn shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition md:px-5" data-program-tab="courtyard">
+              院落剧场
+            </button>
+            <button class="program-tab-btn shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition md:px-5" data-program-tab="street">
+              街头沉浸
+            </button>
+            <button class="program-tab-btn shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition md:px-5" data-program-tab="tea">
+              茶戏体验
+            </button>
+          </div>
+        </div>
+
+        <div id="program-card-grid" class="grid grid-cols-1 gap-6 md:grid-cols-3 xl:grid-cols-4"></div>
+      </section>
+
+      <section id="tickets" class="mx-auto hidden max-w-6xl px-6 pb-24">
+        <div class="mb-10">
+          <p class="text-sm uppercase tracking-[0.2em] text-emerald-800">Ticket & Packages</p>
+          <h2 class="mt-2 font-heading text-3xl md:text-4xl">票种与套餐选择</h2>
+          <p id="selected-show-brief" class="mt-3 rounded-lg border border-theme-gold/45 bg-[#d4a95c]/12 px-3 py-2 text-sm text-emerald-950">
+            请先在上方选择剧目场次。
+          </p>
+          <p class="mt-3 max-w-3xl text-emerald-900/80">
+            支持单场购票与非遗沉浸套票组合，系统将实时汇总你的已选项目与订单总价。
+          </p>
+        </div>
+
+        <div class="space-y-12">
+          <div>
+            <div class="mb-5 flex items-center justify-between">
+              <h3 class="font-heading text-2xl">模式一：单场戏剧票</h3>
+              <span class="rounded-full border border-emerald-800/30 px-3 py-1 text-xs font-semibold text-emerald-900/80">
+                单张购票
+              </span>
+            </div>
+            <div class="grid gap-6 md:grid-cols-3">
+              <article class="rounded-2xl border border-emerald-900/15 bg-white/70 p-6 shadow-sm">
+                <h4 class="font-heading text-2xl">早鸟票</h4>
+                <p class="mt-2 text-sm text-emerald-900/80">限量发售，适合提前规划行程的观众。</p>
+                <p class="mt-4 text-3xl font-bold text-emerald-900">¥88</p>
+                <button
+                  class="add-to-cart mt-5 w-full rounded-md bg-theme-emerald px-4 py-2.5 font-semibold text-emerald-50 transition hover:bg-emerald-800"
+                  data-item="早鸟票"
+                  data-price="88"
+                  data-time="2026.03.15 19:30"
+                  data-type="单场票"
+                >
+                  加入订单
+                </button>
+              </article>
+
+              <article class="rounded-2xl border border-emerald-900/15 bg-white/70 p-6 shadow-sm">
+                <h4 class="font-heading text-2xl">正价票</h4>
+                <p class="mt-2 text-sm text-emerald-900/80">标准观演席位，可选对应场次购票。</p>
+                <p class="mt-4 text-3xl font-bold text-emerald-900">¥128</p>
+                <button
+                  class="add-to-cart mt-5 w-full rounded-md bg-theme-emerald px-4 py-2.5 font-semibold text-emerald-50 transition hover:bg-emerald-800"
+                  data-item="正价票"
+                  data-price="128"
+                  data-time="2026.03.16 20:00"
+                  data-type="单场票"
+                >
+                  加入订单
+                </button>
+              </article>
+
+              <article class="rounded-2xl border border-theme-gold/70 bg-gradient-to-br from-[#f8edd9] to-white p-6 shadow-md">
+                <h4 class="font-heading text-2xl">VIP前排票</h4>
+                <p class="mt-2 text-sm text-emerald-900/80">前排观演区，支持选座（UI 示意）。</p>
+                <p class="mt-4 text-3xl font-bold text-emerald-900">¥299</p>
+                <button
+                  id="open-seat-modal"
+                  class="mt-5 w-full rounded-md bg-theme-gold px-4 py-2.5 font-semibold text-theme-text transition hover:bg-[#e4bb72]"
+                >
+                  选座购买（示意）
+                </button>
+              </article>
+            </div>
+          </div>
+
+          <div id="immersive-packages">
+            <div class="mb-5 flex items-center justify-between">
+              <h3 class="font-heading text-2xl">沉浸式体验套票</h3>
+              <span class="recommend-badge rounded-full bg-theme-gold px-3 py-1 text-xs font-semibold text-theme-text">
+                推荐
+              </span>
+            </div>
+            <div class="grid gap-6 md:grid-cols-2">
+              <article class="relative rounded-2xl border border-emerald-950/80 bg-gradient-to-br from-emerald-950 to-emerald-900 p-6 text-emerald-50 shadow-lg shadow-emerald-950/25">
+                <span class="recommend-badge absolute right-4 top-4 rounded-full border border-theme-gold/70 bg-theme-gold/20 px-3 py-1 text-xs font-bold text-theme-gold">
+                  推荐
+                </span>
+                <h4 class="font-heading text-2xl">卡片 A｜文化初探</h4>
+                <ul class="mt-3 space-y-2 text-sm text-emerald-100/90">
+                  <li>• 单场剧目票</li>
+                  <li>• 茯茶制作体验券</li>
+                  <li>• 赠送茯茶一盏</li>
+                </ul>
+                <p class="mt-5 text-3xl font-bold text-theme-gold">¥228</p>
+                <button
+                  class="open-quantity-modal btn-breathe mt-5 w-full rounded-md bg-emerald-700 px-4 py-2.5 font-semibold text-white transition hover:bg-emerald-800"
+                  data-item="沉浸式套票A｜文化初探"
+                  data-price="228"
+                  data-time="2026.03.26 全天可用"
+                  data-type="文化体验闭环"
+                >
+                  选择数量并购买
+                </button>
+              </article>
+
+              <article class="relative rounded-2xl border border-theme-gold/80 bg-gradient-to-br from-[#0f3a2f] via-[#184d3f] to-[#1f5a4a] p-6 text-emerald-50 shadow-lg shadow-emerald-950/30">
+                <span class="recommend-badge absolute right-4 top-4 rounded-full border border-theme-gold/80 bg-theme-gold/25 px-3 py-1 text-xs font-bold text-theme-gold">
+                  推荐
+                </span>
+                <h4 class="font-heading text-2xl">卡片 B｜深度沉浸</h4>
+                <ul class="mt-3 space-y-2 text-sm text-emerald-100/90">
+                  <li>• 全天戏剧通票</li>
+                  <li>• 茯茶主题午餐</li>
+                  <li>• 镇内民宿 9 折优惠</li>
+                </ul>
+                <p class="mt-5 text-3xl font-bold text-theme-gold">¥568</p>
+                <button
+                  class="open-quantity-modal btn-breathe mt-5 w-full rounded-md bg-emerald-700 px-4 py-2.5 font-semibold text-white transition hover:bg-emerald-800"
+                  data-item="沉浸式套票B｜深度沉浸"
+                  data-price="568"
+                  data-time="2026.03.27 全天可用"
+                  data-type="文化体验闭环"
+                >
+                  选择数量并购买
+                </button>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="cart-backdrop" class="fixed inset-0 z-[54] hidden bg-emerald-950/35 backdrop-blur-sm"></div>
+    <aside
+      id="cart-drawer"
+      class="fixed right-0 top-0 z-[55] h-full w-full max-w-sm translate-x-full border-l border-theme-emerald/40 bg-white p-5 shadow-2xl shadow-emerald-950/10 transition-transform duration-300"
+      aria-label="购物车订单摘要"
+    >
+      <div class="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-emerald-800">Cart</p>
+          <h3 class="font-heading text-2xl">购票结算</h3>
+        </div>
+        <button id="close-cart" class="rounded-md px-2 py-1 text-sm text-emerald-900/70 hover:bg-emerald-50">关闭</button>
+      </div>
+      <ul id="cart-items" class="max-h-[58vh] space-y-3 overflow-y-auto pr-1 text-sm md:max-h-[62vh]">
+        <li class="empty-cart rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂未选择票种</li>
+      </ul>
+      <div class="mt-5 border-t border-emerald-900/15 pt-4">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-emerald-900/80">合计</span>
+          <strong id="cart-total" class="text-2xl font-bold text-emerald-950">¥0</strong>
+        </div>
+        <button
+          id="open-checkout"
+          class="btn-breathe mt-4 w-full rounded-md bg-emerald-700 px-4 py-2.5 font-semibold text-white transition hover:bg-emerald-800"
+        >
+          去支付确认
+        </button>
+      </div>
+    </aside>
+
+    <div id="seat-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-emerald-950/55 px-4">
+      <div class="max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-theme-gold/70 bg-white p-5 shadow-2xl md:p-6">
+        <div class="mb-4 flex items-center justify-between">
+          <h3 class="font-heading text-2xl">选座 / 选票</h3>
+          <button id="close-seat-modal" class="rounded-md px-2 py-1 text-sm text-emerald-900/70 hover:bg-emerald-50">关闭</button>
+        </div>
+        <div class="mb-4 flex flex-wrap gap-3 text-xs text-emerald-900/80">
+          <span class="inline-flex items-center gap-1"><span class="seat-dot seat-sold"></span> 已售罄</span>
+          <span class="inline-flex items-center gap-1"><span class="seat-dot seat-normal"></span> 可选普通席</span>
+          <span class="inline-flex items-center gap-1"><span class="seat-dot seat-vip"></span> 可选贵宾茶歇席</span>
+          <span class="inline-flex items-center gap-1"><span class="seat-dot seat-selected"></span> 已选中</span>
+        </div>
+        <div id="seat-viewport" class="seat-viewport h-[360px] w-full md:h-[420px]">
+          <div id="seat-canvas" class="seat-canvas min-h-[560px] min-w-[980px] p-4">
+            <div id="seat-grid" class="grid grid-cols-12 gap-3"></div>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <p id="seat-summary" class="text-sm text-emerald-900/85">您已选择：未选择座位，预计金额：￥0</p>
+          <p class="text-xs text-emerald-900/65">支持双指缩放与拖拽，查看全景座位分布</p>
+          <button
+            id="confirm-vip-seat"
+            class="btn-emerald-ux rounded-md px-5 py-2 font-semibold"
+          >
+            确认加入
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button
+      id="checkout-minimized"
+      class="fixed bottom-4 right-4 z-40 hidden rounded-full border border-theme-emerald bg-white px-3 py-1.5 text-xs font-semibold text-theme-text shadow-lg hover:bg-emerald-50 md:left-4 md:right-auto md:px-4 md:py-2 md:text-sm"
+      style="bottom: calc(1rem + var(--safe-bottom));"
+    >
+      支付确认
+    </button>
+
+    <section
+      id="checkout-panel"
+      class="fixed inset-0 z-[60] hidden items-end justify-center bg-emerald-950/45 p-4 md:items-center"
+      aria-label="支付确认弹窗"
+    >
+      <div class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-theme-emerald/40 bg-white p-5 shadow-2xl md:p-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-emerald-800">Payment</p>
+            <h3 class="font-heading text-3xl">支付确认</h3>
+          </div>
+          <button
+            id="minimize-checkout"
+            class="rounded-md border border-emerald-900/20 px-3 py-1.5 text-sm text-emerald-900/80 hover:bg-emerald-50"
+          >
+            最小化
+          </button>
+        </div>
+
+        <div class="mt-4 rounded-xl border border-theme-gold/50 bg-[#d4a95c]/15 px-4 py-3">
+          <p id="checkout-timer" class="text-sm font-semibold text-emerald-950">
+            请在 15:00 内完成支付，座位已为您锁定
+          </p>
+        </div>
+
+        <div class="mt-5 grid gap-6 md:grid-cols-2">
+          <div>
+            <h4 class="font-heading text-xl">订单详情回顾</h4>
+            <ul id="checkout-items" class="mt-3 max-h-64 space-y-3 overflow-y-auto pr-1 text-sm">
+              <li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">请先在页面中选择票种</li>
+            </ul>
+            <div class="mt-4 flex items-center justify-between border-t border-emerald-900/15 pt-3">
+              <span class="text-sm text-emerald-900/80">总价</span>
+              <strong id="checkout-total" class="text-2xl font-bold text-emerald-950">¥0</strong>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="font-heading text-xl">支付信息</h4>
+            <div class="mt-3 space-y-3">
+              <label class="block text-sm">
+                <span class="mb-1.5 block text-emerald-900/80">取票码接收手机号</span>
+                <input
+                  id="ticket-phone"
+                  type="tel"
+                  placeholder="请输入手机号"
+                  class="w-full rounded-md border border-emerald-900/20 px-3 py-2.5 outline-none transition focus:border-theme-emerald focus:ring-2 focus:ring-theme-emerald/20"
+                />
+              </label>
+              <button id="fill-last-contact" class="rounded-md border border-emerald-900/20 px-3 py-2 text-xs font-semibold text-emerald-900 hover:bg-emerald-50">
+                一键填充联系人
+              </button>
+            </div>
+
+            <div class="mt-4">
+              <h5 class="text-sm font-semibold text-emerald-900/90">支付方式</h5>
+              <div class="mt-2 grid grid-cols-2 gap-3 text-sm">
+                <label class="pay-option flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-emerald-900/20 px-3 py-3 transition hover:border-theme-emerald">
+                  <input type="radio" name="pay" value="微信支付" checked class="accent-theme-emerald" />
+                  <span class="text-3xl" aria-hidden="true">🟢</span>
+                  <span>微信支付</span>
+                </label>
+                <label class="pay-option flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-emerald-900/20 px-3 py-3 transition hover:border-theme-emerald">
+                  <input type="radio" name="pay" value="支付宝" class="accent-theme-emerald" />
+                  <span class="text-3xl" aria-hidden="true">🔵</span>
+                  <span>支付宝</span>
+                </label>
+              </div>
+            </div>
+
+            <p class="mt-4 rounded-lg border border-theme-gold/50 bg-[#d4a95c]/12 px-3 py-2 text-xs leading-relaxed text-emerald-900/85">
+              请在演出前30分钟凭取票码至茯茶镇游客中心换取纸质实体纪念票。
+            </p>
+
+            <button id="confirm-payment" class="btn-breathe btn-emerald-ux mt-5 w-full rounded-md px-4 py-3 font-semibold">
+              立即支付
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="quantity-modal" class="fixed inset-0 z-[58] hidden items-center justify-center bg-emerald-950/45 px-4">
+      <div class="w-full max-w-sm rounded-2xl border border-theme-emerald/40 bg-white p-5 shadow-2xl">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-heading text-2xl">选择购买数量</h3>
+          <button id="close-quantity-modal" class="rounded-md px-2 py-1 text-sm text-emerald-900/70 hover:bg-emerald-50">关闭</button>
+        </div>
+        <p id="quantity-target" class="mt-2 text-sm text-emerald-900/80">请选择数量</p>
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <button id="qty-minus" class="rounded-md border border-emerald-900/20 px-3 py-1.5 text-lg">-</button>
+          <span id="qty-value" class="min-w-10 text-center text-xl font-bold text-emerald-950">1</span>
+          <button id="qty-plus" class="rounded-md border border-emerald-900/20 px-3 py-1.5 text-lg">+</button>
+        </div>
+        <button id="confirm-quantity-buy" class="btn-breathe mt-5 w-full rounded-md bg-emerald-700 px-4 py-2.5 font-semibold text-white transition hover:bg-emerald-800">
+          确认加入订单
+        </button>
+      </div>
+    </div>
+
+    <div id="upsell-modal" class="fixed inset-0 z-[59] hidden items-center justify-center bg-emerald-950/45 px-4">
+      <div class="w-full max-w-md rounded-2xl border border-theme-gold/60 bg-white p-5 shadow-2xl">
+        <h3 class="font-heading text-2xl">沉浸式体验加购</h3>
+        <p class="mt-3 text-sm text-emerald-900/85">
+          只需加购 20 元，即可升级为【非遗茶礼套餐】，包含演出期间的茯茶一盏及手工制茶体验。
+        </p>
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <button id="upsell-skip" class="rounded-md border border-emerald-900/20 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50">暂不加购</button>
+          <button id="upsell-add" class="btn-emerald-ux rounded-md px-3 py-2 text-sm font-semibold">加购并继续</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="success-modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-emerald-950/45 px-4">
+      <div id="success-panel" class="w-full max-w-xl rounded-2xl border border-theme-gold/60 bg-white p-5 shadow-2xl">
+        <h3 class="font-heading text-2xl">购票成功</h3>
+        <div id="ticket-card" class="ticket-paper relative mt-4 overflow-hidden rounded-xl border border-emerald-900/15 p-4 md:p-5">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.2em] text-emerald-900/70">Fucha Theatre Fest</p>
+              <h4 class="font-heading text-xl text-emerald-950">茯茶镇戏剧节 官方票根</h4>
+            </div>
+            <span class="ticket-seal inline-flex h-14 w-14 items-center justify-center rounded-full border border-theme-gold/80 bg-theme-gold/25 text-[9px] leading-tight text-theme-text">
+              茯茶镇戏剧节<br />入场凭证
+            </span>
+          </div>
+
+          <div class="ticket-zigzag my-4 h-5"></div>
+
+          <div class="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
+            <div class="space-y-1 text-sm text-emerald-900/85">
+              <p id="ticket-title" class="font-heading text-2xl text-emerald-950">《剧目名称》</p>
+              <p id="ticket-time">场次时间：--</p>
+              <p id="ticket-venue">演出地点：--</p>
+              <p id="ticket-seat">座位号：--</p>
+            </div>
+            <div class="flex flex-col items-center justify-center rounded-lg border border-emerald-900/10 bg-white/75 p-3">
+              <img id="ticket-qr" alt="电子票二维码占位图" class="h-32 w-32 rounded-md border border-emerald-900/10 bg-white p-1" />
+              <p class="mt-2 text-xs text-emerald-900/70">动态入场 QR</p>
+            </div>
+          </div>
+          <p id="ticket-traveler" class="mt-4 text-sm text-emerald-900/85">您是第 1024 位入戏茯茶镇的旅人</p>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <a id="save-ticket-btn" download="fucha-ticket.svg" class="btn-emerald-ux inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold">保存至相册</a>
+          <button id="share-ticket-btn" class="btn-emerald-ux inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold">邀请戏搭子（分享链接）</button>
+        </div>
+        <button id="close-success" class="mt-3 w-full rounded-md border border-emerald-900/20 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50">关闭</button>
+      </div>
+    </div>
+
+    <div id="auth-modal" class="fixed inset-0 z-[75] hidden items-end justify-end bg-emerald-950/45 md:items-stretch">
+      <div class="login-bg-breathe absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(212,169,92,0.18),transparent_35%),radial-gradient(circle_at_80%_70%,rgba(16,185,129,0.18),transparent_40%),linear-gradient(135deg,#052e22,#064e3b)]"></div>
+      <div class="relative h-[86vh] w-full rounded-t-3xl border border-theme-gold/30 bg-white/80 p-5 backdrop-blur-xl panel-rise md:h-full md:max-w-md md:rounded-none md:rounded-l-3xl md:p-6">
+        <button id="close-auth-modal" class="absolute right-4 top-4 rounded-md px-2 py-1 text-sm text-emerald-900/70 hover:bg-emerald-50">关闭</button>
+        <div class="pt-2">
+          <p class="text-xs uppercase tracking-[0.25em] text-theme-gold">FUCHA TOWN</p>
+          <h3 class="mt-2 font-heading text-3xl text-emerald-950">茯茶镇青年戏剧节</h3>
+          <p class="mt-1 text-sm text-emerald-900/80">入戏茯茶，共饮长安</p>
+        </div>
+
+        <div class="mt-6 rounded-xl border border-emerald-900/10 bg-white/80 p-4">
+          <button id="wechat-quick-login" class="btn-emerald-ux w-full rounded-md px-4 py-3 text-sm font-semibold">微信一键登录</button>
+          <button id="toggle-more-login" class="mt-3 w-full rounded-md border border-emerald-900/20 px-4 py-2.5 text-sm font-semibold text-emerald-900 hover:bg-emerald-50">更多方式</button>
+
+          <div id="more-login-panel" class="mt-3 hidden space-y-3">
+            <div class="grid grid-cols-[84px_1fr] gap-2">
+              <select id="country-code" class="rounded-md border border-emerald-900/20 px-2 py-2.5 text-sm focus:border-theme-emerald focus:outline-none">
+                <option value="+86">+86</option>
+              </select>
+              <input id="auth-phone" type="tel" placeholder="请输入手机号" class="rounded-md border border-emerald-900/20 px-3 py-2.5 text-sm outline-none transition focus:border-theme-emerald focus:ring-2 focus:ring-theme-emerald/20" />
+            </div>
+            <div class="grid grid-cols-[1fr_auto] gap-2">
+              <input id="auth-code" type="text" placeholder="验证码" class="rounded-md border border-emerald-900/20 px-3 py-2.5 text-sm outline-none transition focus:border-theme-emerald focus:ring-2 focus:ring-theme-emerald/20" />
+              <button id="send-code-btn" class="rounded-md border border-emerald-900/20 px-3 py-2.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50">发送验证码</button>
+            </div>
+            <input id="auth-email" type="email" placeholder="或输入邮箱继续" class="rounded-md border border-emerald-900/20 px-3 py-2.5 text-sm outline-none transition focus:border-theme-emerald focus:ring-2 focus:ring-theme-emerald/20" />
+            <button id="auth-submit-btn" class="btn-emerald-ux w-full rounded-md px-4 py-2.5 text-sm font-semibold">登录 / 注册</button>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="rounded-md border border-emerald-900/20 px-3 py-2 text-xs font-semibold text-emerald-900">Apple</button>
+              <button class="rounded-md border border-emerald-900/20 px-3 py-2 text-xs font-semibold text-emerald-900">Google</button>
+            </div>
+          </div>
+
+          <p class="mt-4 text-xs text-emerald-900/70">其他登录方式</p>
+          <div class="mt-2 grid grid-cols-4 gap-2 text-xs">
+            <button class="rounded-md border border-emerald-900/20 px-2 py-2">🟢 微信</button>
+            <button class="rounded-md border border-emerald-900/20 px-2 py-2"> Apple</button>
+            <button class="rounded-md border border-emerald-900/20 px-2 py-2">🔵 Google</button>
+            <button class="rounded-md border border-emerald-900/20 px-2 py-2">✉️ 邮箱</button>
+          </div>
+
+          <label class="mt-4 flex items-start gap-2 text-xs text-emerald-900/75">
+            <input id="auth-agree" type="checkbox" class="mt-0.5 accent-theme-emerald" />
+            <span>我已阅读并同意《用户协议》与《隐私政策》</span>
+          </label>
+          <button id="guest-continue" class="mt-3 w-full rounded-md border border-theme-gold/60 px-4 py-2.5 text-sm font-semibold text-theme-text hover:bg-theme-gold/10">以访客身份继续浏览</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const mainContent = document.getElementById("main-content");
+
+      const programTabs = document.querySelectorAll(".program-tab-btn");
+      const programCardGrid = document.getElementById("program-card-grid");
+      const ticketsSection = document.getElementById("tickets");
+      const selectedShowBriefElement = document.getElementById("selected-show-brief");
+
+      const addToCartButtons = document.querySelectorAll(".add-to-cart");
+      const quantityModalButtons = document.querySelectorAll(".open-quantity-modal");
+      const openSeatModalButton = document.getElementById("open-seat-modal");
+      const closeSeatModalButton = document.getElementById("close-seat-modal");
+      const confirmVipSeatButton = document.getElementById("confirm-vip-seat");
+
+      const cartItemsElement = document.getElementById("cart-items");
+      const cartTotalElement = document.getElementById("cart-total");
+      const cartCountElement = document.getElementById("cart-count");
+      const cartButton = document.getElementById("open-cart");
+      const closeCartButton = document.getElementById("close-cart");
+      const cartDrawer = document.getElementById("cart-drawer");
+      const cartBackdrop = document.getElementById("cart-backdrop");
+
+      const openCheckoutButton = document.getElementById("open-checkout");
+      const checkoutPanel = document.getElementById("checkout-panel");
+      const minimizeCheckoutButton = document.getElementById("minimize-checkout");
+      const minimizedCheckoutButton = document.getElementById("checkout-minimized");
+      const checkoutItemsElement = document.getElementById("checkout-items");
+      const checkoutTotalElement = document.getElementById("checkout-total");
+      const checkoutTimerElement = document.getElementById("checkout-timer");
+      const ticketPhoneInput = document.getElementById("ticket-phone");
+      const fillLastContactButton = document.getElementById("fill-last-contact");
+      const confirmPaymentButton = document.getElementById("confirm-payment");
+
+      const quantityModal = document.getElementById("quantity-modal");
+      const closeQuantityModalButton = document.getElementById("close-quantity-modal");
+      const quantityTargetText = document.getElementById("quantity-target");
+      const qtyMinusButton = document.getElementById("qty-minus");
+      const qtyPlusButton = document.getElementById("qty-plus");
+      const qtyValueElement = document.getElementById("qty-value");
+      const confirmQuantityBuyButton = document.getElementById("confirm-quantity-buy");
+
+      const seatModal = document.getElementById("seat-modal");
+      const seatViewport = document.getElementById("seat-viewport");
+      const seatCanvas = document.getElementById("seat-canvas");
+      const seatGrid = document.getElementById("seat-grid");
+      const seatSummary = document.getElementById("seat-summary");
+
+      const upsellModal = document.getElementById("upsell-modal");
+      const upsellAddButton = document.getElementById("upsell-add");
+      const upsellSkipButton = document.getElementById("upsell-skip");
+
+      const successModal = document.getElementById("success-modal");
+      const successPanel = document.getElementById("success-panel");
+      const ticketTitle = document.getElementById("ticket-title");
+      const ticketTime = document.getElementById("ticket-time");
+      const ticketVenue = document.getElementById("ticket-venue");
+      const ticketSeat = document.getElementById("ticket-seat");
+      const ticketTraveler = document.getElementById("ticket-traveler");
+      const ticketQr = document.getElementById("ticket-qr");
+      const saveTicketBtn = document.getElementById("save-ticket-btn");
+      const shareTicketBtn = document.getElementById("share-ticket-btn");
+      const closeSuccessButton = document.getElementById("close-success");
+      const authModal = document.getElementById("auth-modal");
+      const closeAuthModalButton = document.getElementById("close-auth-modal");
+      const wechatQuickLoginButton = document.getElementById("wechat-quick-login");
+      const toggleMoreLoginButton = document.getElementById("toggle-more-login");
+      const moreLoginPanel = document.getElementById("more-login-panel");
+      const authPhoneInput = document.getElementById("auth-phone");
+      const authCodeInput = document.getElementById("auth-code");
+      const authEmailInput = document.getElementById("auth-email");
+      const authSubmitButton = document.getElementById("auth-submit-btn");
+      const sendCodeButton = document.getElementById("send-code-btn");
+      const authAgreeCheckbox = document.getElementById("auth-agree");
+      const guestContinueButton = document.getElementById("guest-continue");
+
+      const schedulePrevMonthButton = document.getElementById("schedule-prev-month");
+      const scheduleNextMonthButton = document.getElementById("schedule-next-month");
+      const scheduleCurrentMonthElement = document.getElementById("schedule-current-month");
+      const scheduleCalendarGrid = document.getElementById("schedule-calendar-grid");
+      const scheduleSelectedDateElement = document.getElementById("schedule-selected-date");
+      const scheduleDayEventsElement = document.getElementById("schedule-day-events");
+
+      const programData = [
+        { tag: "courtyard", title: "《秦腔回廊》", time: "2026.03.21 19:30", venue: "关中民俗院落", price: 80, isHot: true, image: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=900&q=80" },
+        { tag: "courtyard", title: "《青瓦戏梦》", time: "2026.03.22 20:00", venue: "关中民俗院落", price: 80, isHot: false, image: "https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80" },
+        { tag: "street", title: "《街巷回声》", time: "2026.03.23 18:30", venue: "茯茶文化广场", price: 80, isHot: true, image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80" },
+        { tag: "street", title: "《茶镇夜行》", time: "2026.03.23 21:00", venue: "茯茶文化广场", price: 80, isHot: false, image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80" },
+        { tag: "tea", title: "《茶香一幕》", time: "2026.03.24 16:00", venue: "茯茶文化广场", price: 80, isHot: false, image: "https://images.unsplash.com/photo-1523920290228-4f321a939b4c?auto=format&fit=crop&w=900&q=80" },
+        { tag: "tea", title: "《盏中入戏》", time: "2026.03.24 19:00", venue: "关中民俗院落", price: 80, isHot: true, image: "https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?auto=format&fit=crop&w=900&q=80" },
+        { tag: "street", title: "《市集戏场》", time: "2026.03.25 17:30", venue: "茯茶文化广场", price: 80, isHot: false, image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80" },
+        { tag: "courtyard", title: "《院门听戏》", time: "2026.03.25 20:00", venue: "关中民俗院落", price: 80, isHot: true, image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=900&q=80" },
+      ];
+
+      const seatCols = 12;
+      const seatRows = 6;
+      const seatMapData = Array.from({ length: seatCols * seatRows }, (_, i) => {
+        const row = Math.floor(i / seatCols) + 1;
+        const col = (i % seatCols) + 1;
+        const sold = i % 11 === 0 || i % 17 === 0;
+        const vip = !sold && (row <= 2 || col % 5 === 0);
+        return {
+          id: `3号院落 ${row}排${col}座`,
+          row,
+          col,
+          status: sold ? "sold" : vip ? "vip" : "normal",
+          price: sold ? 0 : vip ? 180 : 120,
+        };
+      });
+
+      const cartState = {
+        items: [],
+        coupons: [],
+        selectedShow: null,
+        upsellAdded: false,
+        contact: {},
+      };
+
+      let activeProgramTag = "all";
+      let selectedSeat = null;
+      let selectedPackageMeta = null;
+      let selectedPackageQuantity = 1;
+      let checkoutEndTime = null;
+      let checkoutTimerId = null;
+      let isLoggedIn = false;
+      let pendingPurchaseAction = null;
+      let codeTimer = null;
+      let codeLeft = 0;
+      let currentScheduleMonth = new Date(2026, 2, 1);
+      let selectedScheduleDateKey = "2026-03-21";
+
+      const viewportState = {
+        scale: 1,
+        x: 0,
+        y: 0,
+        pointers: new Map(),
+        pinchStartDistance: 0,
+        pinchStartScale: 1,
+      };
+
+      const toDateKey = (date) => date.toISOString().slice(0, 10);
+      const parseDateKeyFromTime = (timeText) => timeText.split(" ")[0].replaceAll(".", "-");
+      const formatPrice = (price) => `¥${price}`;
+
+      const scheduleEvents = programData.map((item) => ({
+        date: parseDateKeyFromTime(item.time),
+        title: item.title,
+        time: item.time.split(" ")[1],
+        venue: item.venue,
+        price: item.price,
+      }));
+
+      const lockButtonFeedback = (button) => {
+        if (!button) return;
+        const original = button.innerHTML;
+        button.innerHTML = "✅ 已锁定席位";
+        button.disabled = true;
+        window.setTimeout(() => {
+          button.innerHTML = original;
+          button.disabled = false;
+        }, 1100);
+      };
+
+      const triggerCartPop = () => {
+        cartCountElement.classList.remove("cart-pop");
+        void cartCountElement.offsetWidth;
+        cartCountElement.classList.add("cart-pop");
+      };
+
+      const animateFlyToCart = (sourceElement, label = "已加入") => {
+        if (!sourceElement || !cartButton) return;
+        const sourceRect = sourceElement.getBoundingClientRect();
+        const targetRect = cartButton.getBoundingClientRect();
+        const token = document.createElement("div");
+        token.className = "cart-fly-token";
+        token.textContent = label;
+        token.style.left = `${sourceRect.left + sourceRect.width / 2 - 24}px`;
+        token.style.top = `${sourceRect.top + sourceRect.height / 2 - 14}px`;
+        document.body.appendChild(token);
+
+        const deltaX = targetRect.left + targetRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
+        const deltaY = targetRect.top + targetRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
+        token.animate(
+          [
+            { transform: "translate3d(0,0,0) scale(1)", opacity: 0.95 },
+            { transform: `translate3d(${deltaX * 0.7}px, ${deltaY * 0.5}px, 0) scale(0.88)`, opacity: 0.9, offset: 0.65 },
+            { transform: `translate3d(${deltaX}px, ${deltaY}px, 0) scale(0.58)`, opacity: 0 },
+          ],
+          { duration: 560, easing: "cubic-bezier(.2,.7,.2,1)" }
+        );
+
+        window.setTimeout(() => {
+          token.remove();
+          triggerCartPop();
+        }, 560);
+      };
+
+      const updateBodyFocus = () => {
+        const anyModalOpen =
+          !cartDrawer.classList.contains("translate-x-full") ||
+          !seatModal.classList.contains("hidden") ||
+          !checkoutPanel.classList.contains("hidden") ||
+          !quantityModal.classList.contains("hidden") ||
+          !upsellModal.classList.contains("hidden") ||
+          !successModal.classList.contains("hidden") ||
+          !authModal.classList.contains("hidden");
+        document.body.classList.toggle("no-scroll", anyModalOpen);
+        mainContent.classList.toggle("main-soft-blur", !cartDrawer.classList.contains("translate-x-full"));
+      };
+
+      const openAuthModal = () => {
+        authModal.classList.remove("hidden");
+        authModal.classList.add("flex");
+        updateBodyFocus();
+      };
+      const closeAuthModal = () => {
+        authModal.classList.add("hidden");
+        authModal.classList.remove("flex");
+        updateBodyFocus();
+      };
+
+      const runInputError = (input) => {
+        if (!input) return;
+        input.classList.add("input-error", "input-shake");
+        window.setTimeout(() => input.classList.remove("input-shake"), 240);
+      };
+      const resetInputError = (input) => {
+        if (!input) return;
+        input.classList.remove("input-error");
+      };
+
+      const requireAuthForPurchase = (action) => {
+        if (isLoggedIn) {
+          action();
+          return;
+        }
+        pendingPurchaseAction = action;
+        openAuthModal();
+      };
+
+      const completeAuthAndContinue = () => {
+        isLoggedIn = true;
+        closeAuthModal();
+        if (pendingPurchaseAction) {
+          const next = pendingPurchaseAction;
+          pendingPurchaseAction = null;
+          next();
+        }
+      };
+
+      const startCodeCountdown = () => {
+        codeLeft = 59;
+        sendCodeButton.disabled = true;
+        sendCodeButton.textContent = `戏台准备中... ${codeLeft}s`;
+        if (codeTimer) clearInterval(codeTimer);
+        codeTimer = setInterval(() => {
+          codeLeft -= 1;
+          if (codeLeft <= 0) {
+            clearInterval(codeTimer);
+            codeTimer = null;
+            sendCodeButton.disabled = false;
+            sendCodeButton.textContent = "发送验证码";
+            return;
+          }
+          sendCodeButton.textContent = `戏台准备中... ${codeLeft}s`;
+        }, 1000);
+      };
+
+      const setActiveProgramTab = (target) => {
+        activeProgramTag = target;
+        programTabs.forEach((btn) => {
+          const active = btn.dataset.programTab === target;
+          btn.classList.toggle("bg-theme-emerald", active);
+          btn.classList.toggle("text-emerald-50", active);
+          btn.classList.toggle("text-theme-text", !active);
+        });
+      };
+
+      const createProgramCard = (item, idx) => {
+        const article = document.createElement("article");
+        article.className =
+          "program-card group relative overflow-hidden rounded-2xl border border-emerald-900/10 bg-white/80 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/10 animate-in";
+        article.style.animationDelay = `${idx * 70}ms`;
+        article.dataset.programCategory = item.tag;
+
+        article.innerHTML = `
+          <img src="${item.image}" alt="${item.title}海报" class="h-48 w-full object-cover" />
+          <div class="space-y-2 p-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-heading text-xl">${item.title}</h3>
+              ${item.isHot ? '<span class="recommend-badge rounded-full bg-theme-gold/20 px-2 py-0.5 text-[10px] font-bold text-theme-gold">热销</span>' : ""}
+            </div>
+            <p class="text-sm text-emerald-900/80">演出时间：${item.time}</p>
+            <p class="text-sm text-emerald-900/80">演出地点：${item.venue}</p>
+            <p class="font-semibold text-emerald-900">票价：￥${item.price}起</p>
+          </div>
+          <div class="pointer-events-none absolute inset-x-4 bottom-4 opacity-100 transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+            <button class="choose-show-btn pointer-events-auto w-full rounded-md bg-theme-gold px-4 py-2.5 font-semibold text-theme-text" data-show="${item.title}" data-show-time="${item.time}" data-show-venue="${item.venue}">立即购票</button>
+          </div>
+        `;
+        return article;
+      };
+
+      const renderProgramCards = () => {
+        const filtered = activeProgramTag === "all" ? programData : programData.filter((p) => p.tag === activeProgramTag);
+        requestAnimationFrame(() => {
+          programCardGrid.innerHTML = "";
+          filtered.forEach((item, idx) => programCardGrid.appendChild(createProgramCard(item, idx)));
+        });
+      };
+
+      programTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          setActiveProgramTab(tab.dataset.programTab);
+          renderProgramCards();
+        });
+      });
+
+      const selectShowAndRevealTickets = (show, showTime, showVenue) => {
+        cartState.selectedShow = { show, time: showTime, venue: showVenue };
+        selectedShowBriefElement.textContent = `已选剧目：${show}｜${showTime}｜${showVenue}`;
+        ticketsSection.classList.remove("hidden");
+        ticketsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+
+      programCardGrid.addEventListener("click", (event) => {
+        const button = event.target.closest(".choose-show-btn");
+        if (!button) return;
+        requireAuthForPurchase(() => {
+          selectShowAndRevealTickets(button.dataset.show, button.dataset.showTime, button.dataset.showVenue);
+        });
+      });
+
+      scheduleDayEventsElement.addEventListener("click", (event) => {
+        const button = event.target.closest(".schedule-buy-btn");
+        if (!button) return;
+        requireAuthForPurchase(() => {
+          selectShowAndRevealTickets(button.dataset.show, button.dataset.showTime, button.dataset.showVenue);
+        });
+      });
+
+      const getCartTotal = () => cartState.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      const upsertCartItem = (name, price, details, quantity = 1) => {
+        const existing = cartState.items.find((item) => item.name === name && item.meta === details.meta);
+        if (existing) {
+          existing.quantity += quantity;
+        } else {
+          cartState.items.push({ name, price, quantity, time: details.time, meta: details.meta });
+        }
+      };
+
+      const removeCartItem = (index) => {
+        cartState.items.splice(index, 1);
+        renderCart();
+      };
+
+      const renderCart = () => {
+        cartItemsElement.innerHTML = "";
+
+        if (!cartState.items.length) {
+          cartItemsElement.innerHTML = '<li class="empty-cart rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">暂未选择票种</li>';
+          cartTotalElement.textContent = "¥0";
+          cartCountElement.textContent = "0";
+          renderCheckout();
+          return;
+        }
+
+        let count = 0;
+        requestAnimationFrame(() => {
+          cartState.items.forEach((item, idx) => {
+            count += item.quantity;
+            const lineTotal = item.price * item.quantity;
+            const li = document.createElement("li");
+            li.className = "rounded-lg border border-emerald-900/10 bg-white px-3 py-2";
+            li.innerHTML = `
+              <div class="flex items-center justify-between gap-3">
+                <span class="text-emerald-950">${item.name}</span>
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-emerald-900">${formatPrice(lineTotal)}</span>
+                  <button class="remove-cart-item rounded px-2 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-50" data-index="${idx}">删除</button>
+                </div>
+              </div>
+              <div class="mt-1 text-xs text-emerald-900/70">时间：${item.time}</div>
+              <div class="mt-1 text-xs text-emerald-900/70">数量 x ${item.quantity}</div>
+            `;
+            cartItemsElement.appendChild(li);
+          });
+          cartTotalElement.textContent = formatPrice(getCartTotal());
+          cartCountElement.textContent = String(count);
+          renderCheckout();
+        });
+      };
+
+      const updateCart = () => renderCart();
+
+      const renderCheckout = () => {
+        checkoutItemsElement.innerHTML = "";
+        if (!cartState.items.length) {
+          checkoutItemsElement.innerHTML = '<li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">请先在页面中选择票种</li>';
+          checkoutTotalElement.textContent = "¥0";
+          return;
+        }
+
+        cartState.items.forEach((item) => {
+          const li = document.createElement("li");
+          li.className = "rounded-lg border border-emerald-900/10 bg-white px-3 py-2";
+          li.innerHTML = `
+            <p class="font-semibold text-emerald-950">${item.name}</p>
+            <p class="mt-1 text-xs text-emerald-900/75">时间：${item.time}</p>
+            <p class="mt-1 text-xs text-emerald-900/75">类型：${item.meta}</p>
+            <p class="mt-1 text-xs text-emerald-900/75">数量 x ${item.quantity}</p>
+            <p class="mt-1 font-semibold text-emerald-900">${formatPrice(item.price * item.quantity)}</p>
+          `;
+          checkoutItemsElement.appendChild(li);
+        });
+        checkoutTotalElement.textContent = formatPrice(getCartTotal());
+      };
+
+      cartItemsElement.addEventListener("click", (event) => {
+        const btn = event.target.closest(".remove-cart-item");
+        if (!btn) return;
+        removeCartItem(Number(btn.dataset.index));
+      });
+
+      addToCartButtons.forEach((button) => {
+        button.classList.add("btn-emerald-ux");
+        button.addEventListener("click", () => {
+          const { item, price, time, type } = button.dataset;
+          const finalTime = cartState.selectedShow && type === "单场票" ? cartState.selectedShow.time : time;
+          const finalMeta = cartState.selectedShow && type === "单场票" ? `${type} · ${cartState.selectedShow.show}` : type;
+          upsertCartItem(item, Number(price), { time: finalTime, meta: finalMeta });
+          animateFlyToCart(button, "入篮");
+          lockButtonFeedback(button);
+          renderCart();
+        });
+      });
+      [openCheckoutButton, confirmQuantityBuyButton, confirmVipSeatButton, confirmPaymentButton, upsellAddButton].forEach((btn) => {
+        if (btn) btn.classList.add("btn-emerald-ux");
+      });
+
+      const openCart = () => {
+        cartDrawer.classList.remove("translate-x-full");
+        cartBackdrop.classList.remove("hidden");
+        updateBodyFocus();
+      };
+      const closeCart = () => {
+        cartDrawer.classList.add("translate-x-full");
+        cartBackdrop.classList.add("hidden");
+        updateBodyFocus();
+      };
+
+      const openQuantityModal = (meta) => {
+        selectedPackageMeta = meta;
+        selectedPackageQuantity = 1;
+        qtyValueElement.textContent = "1";
+        quantityTargetText.textContent = `已选择：${meta.item}`;
+        quantityModal.classList.remove("hidden");
+        quantityModal.classList.add("flex");
+        updateBodyFocus();
+      };
+
+      const closeQuantityModal = () => {
+        quantityModal.classList.remove("flex");
+        quantityModal.classList.add("hidden");
+        updateBodyFocus();
+      };
+
+      quantityModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          openQuantityModal({
+            item: button.dataset.item,
+            price: Number(button.dataset.price),
+            time: button.dataset.time,
+            type: button.dataset.type,
+          });
+        });
+      });
+
+      qtyMinusButton.addEventListener("click", () => {
+        selectedPackageQuantity = Math.max(1, selectedPackageQuantity - 1);
+        qtyValueElement.textContent = String(selectedPackageQuantity);
+      });
+
+      qtyPlusButton.addEventListener("click", () => {
+        selectedPackageQuantity = Math.min(9, selectedPackageQuantity + 1);
+        qtyValueElement.textContent = String(selectedPackageQuantity);
+      });
+
+      confirmQuantityBuyButton.addEventListener("click", () => {
+        if (!selectedPackageMeta) return;
+        upsertCartItem(
+          selectedPackageMeta.item,
+          selectedPackageMeta.price,
+          { time: selectedPackageMeta.time, meta: selectedPackageMeta.type },
+          selectedPackageQuantity
+        );
+        animateFlyToCart(confirmQuantityBuyButton, `x${selectedPackageQuantity}`);
+        lockButtonFeedback(confirmQuantityBuyButton);
+        closeQuantityModal();
+        openCart();
+        renderCart();
+      });
+
+      closeQuantityModalButton.addEventListener("click", closeQuantityModal);
+      quantityModal.addEventListener("click", (event) => {
+        if (event.target === quantityModal) closeQuantityModal();
+      });
+
+      const applySeatTransform = () => {
+        seatCanvas.style.transform = `translate(${viewportState.x}px, ${viewportState.y}px) scale(${viewportState.scale})`;
+      };
+
+      const distance = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+
+      seatViewport.addEventListener("pointerdown", (event) => {
+        viewportState.pointers.set(event.pointerId, event);
+        seatViewport.setPointerCapture(event.pointerId);
+        if (viewportState.pointers.size === 2) {
+          const [p1, p2] = [...viewportState.pointers.values()];
+          viewportState.pinchStartDistance = distance(p1, p2);
+          viewportState.pinchStartScale = viewportState.scale;
+        }
+      });
+
+      seatViewport.addEventListener("pointermove", (event) => {
+        if (!viewportState.pointers.has(event.pointerId)) return;
+        const prev = viewportState.pointers.get(event.pointerId);
+        viewportState.pointers.set(event.pointerId, event);
+
+        if (viewportState.pointers.size === 1 && prev) {
+          viewportState.x += event.clientX - prev.clientX;
+          viewportState.y += event.clientY - prev.clientY;
+          applySeatTransform();
+        }
+
+        if (viewportState.pointers.size === 2) {
+          const [p1, p2] = [...viewportState.pointers.values()];
+          const newDistance = distance(p1, p2);
+          const nextScale = viewportState.pinchStartScale * (newDistance / (viewportState.pinchStartDistance || 1));
+          viewportState.scale = Math.min(2.4, Math.max(0.8, nextScale));
+          applySeatTransform();
+        }
+      });
+
+      const releasePointer = (event) => {
+        viewportState.pointers.delete(event.pointerId);
+      };
+      seatViewport.addEventListener("pointerup", releasePointer);
+      seatViewport.addEventListener("pointercancel", releasePointer);
+
+      const renderSeatSummary = () => {
+        if (!selectedSeat) {
+          seatSummary.textContent = "您已选择：未选择座位，预计金额：￥0";
+          return;
+        }
+        seatSummary.textContent = `您已选择 ${selectedSeat.id}，预计金额：￥${selectedSeat.price}`;
+      };
+
+      const renderSeatGrid = () => {
+        seatGrid.innerHTML = "";
+        seatMapData.forEach((seat) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          const base = "seat-dot border border-emerald-900/20";
+          const statusClass =
+            seat.status === "sold"
+              ? "seat-sold"
+              : selectedSeat && selectedSeat.id === seat.id
+              ? "seat-selected"
+              : seat.status === "vip"
+              ? "seat-vip"
+              : "seat-normal";
+          btn.className = `${base} ${statusClass}`;
+          btn.title = seat.id;
+          btn.disabled = seat.status === "sold";
+          btn.addEventListener("click", () => {
+            if (seat.status === "sold") return;
+            selectedSeat = seat;
+            renderSeatGrid();
+            renderSeatSummary();
+          });
+          seatGrid.appendChild(btn);
+        });
+      };
+
+      const openSeatModal = () => {
+        seatModal.classList.remove("hidden");
+        seatModal.classList.add("flex");
+        updateBodyFocus();
+      };
+      const closeSeatModal = () => {
+        seatModal.classList.add("hidden");
+        seatModal.classList.remove("flex");
+        updateBodyFocus();
+      };
+
+      openSeatModalButton.addEventListener("click", openSeatModal);
+      closeSeatModalButton.addEventListener("click", closeSeatModal);
+      seatModal.addEventListener("click", (event) => {
+        if (event.target === seatModal) closeSeatModal();
+      });
+
+      confirmVipSeatButton.addEventListener("click", () => {
+        if (!selectedSeat) return;
+        const time = cartState.selectedShow ? cartState.selectedShow.time : "待选场次";
+        const meta = cartState.selectedShow
+          ? `${cartState.selectedShow.show} · ${selectedSeat.id}`
+          : selectedSeat.id;
+        upsertCartItem("VIP前排票", selectedSeat.price, { time, meta });
+        animateFlyToCart(confirmVipSeatButton, "VIP");
+        lockButtonFeedback(confirmVipSeatButton);
+        closeSeatModal();
+        renderCart();
+      });
+
+      const formatDuration = (seconds) => {
+        const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+        const s = String(Math.floor(seconds % 60)).padStart(2, "0");
+        return `${m}:${s}`;
+      };
+
+      const updateCheckoutTimer = () => {
+        if (!checkoutEndTime) return;
+        const remaining = Math.max(0, Math.floor((checkoutEndTime - Date.now()) / 1000));
+        checkoutTimerElement.textContent = `请在 ${formatDuration(remaining)} 内完成支付，座位已为您锁定`;
+        if (remaining <= 0) {
+          clearInterval(checkoutTimerId);
+          checkoutTimerId = null;
+        }
+      };
+
+      const startCheckoutTimer = () => {
+        checkoutEndTime = Date.now() + 15 * 60 * 1000;
+        updateCheckoutTimer();
+        if (checkoutTimerId) clearInterval(checkoutTimerId);
+        checkoutTimerId = setInterval(updateCheckoutTimer, 1000);
+      };
+
+      const openCheckoutPanel = () => {
+        checkoutPanel.classList.remove("hidden");
+        checkoutPanel.classList.add("flex");
+        minimizedCheckoutButton.classList.add("hidden");
+        closeCart();
+        startCheckoutTimer();
+        updateBodyFocus();
+      };
+
+      const openUpsell = () => {
+        upsellModal.classList.remove("hidden");
+        upsellModal.classList.add("flex");
+        updateBodyFocus();
+      };
+
+      const closeUpsell = () => {
+        upsellModal.classList.add("hidden");
+        upsellModal.classList.remove("flex");
+        updateBodyFocus();
+      };
+
+      openCheckoutButton.addEventListener("click", () => {
+        if (!cartState.items.length) return;
+        openUpsell();
+      });
+
+      upsellSkipButton.addEventListener("click", () => {
+        closeUpsell();
+        openCheckoutPanel();
+      });
+
+      upsellAddButton.addEventListener("click", () => {
+        if (!cartState.upsellAdded) {
+          upsertCartItem("非遗茶礼套餐升级", 20, { time: "演出期间", meta: "Upsell" }, 1);
+          cartState.upsellAdded = true;
+          renderCart();
+        }
+        closeUpsell();
+        openCheckoutPanel();
+      });
+
+      const minimizeCheckout = () => {
+        checkoutPanel.classList.add("hidden");
+        checkoutPanel.classList.remove("flex");
+        minimizedCheckoutButton.classList.remove("hidden");
+        updateBodyFocus();
+      };
+
+      const createTicketSvg = (title, time, venue, seat, qrUrl) => {
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500"><rect width="100%" height="100%" fill="#f7f2e4"/><rect x="24" y="24" width="852" height="452" rx="22" fill="#fffef7" stroke="#d4a95c"/><text x="70" y="92" font-size="34" fill="#052e22">茯茶镇戏剧节 官方票根</text><text x="70" y="152" font-size="40" fill="#052e22">${title}</text><text x="70" y="205" font-size="24" fill="#047857">场次时间：${time}</text><text x="70" y="245" font-size="24" fill="#047857">演出地点：${venue}</text><text x="70" y="285" font-size="24" fill="#047857">座位号：${seat}</text><image href="${qrUrl}" x="650" y="165" width="170" height="170"/></svg>`;
+      };
+
+      const openSuccess = () => {
+        const topItem = cartState.items[0];
+        const show = cartState.selectedShow || { show: topItem.name, time: topItem.time, venue: "茯茶镇戏剧节主会场" };
+        const qrPayload = encodeURIComponent(`${topItem.name}|${topItem.time}|${topItem.meta}`);
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${qrPayload}`;
+        const baseTraveler = 1024;
+        const hash = Array.from(`${topItem.name}${topItem.time}${topItem.meta}`).reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+        const travelerNo = baseTraveler + (hash % 5000);
+        ticketTitle.textContent = show.show;
+        ticketTime.textContent = `场次时间：${show.time}`;
+        ticketVenue.textContent = `演出地点：${show.venue}`;
+        ticketSeat.textContent = `座位号：${topItem.meta}`;
+        ticketTraveler.textContent = `您是第 ${travelerNo} 位入戏茯茶镇的旅人`;
+        ticketQr.src = qrUrl;
+        const svg = createTicketSvg(show.show, show.time, show.venue, topItem.meta, qrUrl);
+        saveTicketBtn.href = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+        successModal.classList.remove("hidden");
+        successModal.classList.add("flex");
+        successPanel.classList.remove("ticket-enter");
+        void successPanel.offsetWidth;
+        successPanel.classList.add("ticket-enter");
+        updateBodyFocus();
+      };
+
+      const closeSuccess = () => {
+        successModal.classList.add("hidden");
+        successModal.classList.remove("flex");
+        updateBodyFocus();
+      };
+
+      fillLastContactButton.addEventListener("click", () => {
+        const saved = window.localStorage.getItem("fucha_contact");
+        if (!saved) return;
+        ticketPhoneInput.value = saved;
+      });
+
+      confirmPaymentButton.addEventListener("click", () => {
+        if (!cartState.items.length) return;
+        if (ticketPhoneInput.value.trim()) {
+          window.localStorage.setItem("fucha_contact", ticketPhoneInput.value.trim());
+        }
+        minimizeCheckout();
+        openSuccess();
+      });
+
+      shareTicketBtn.addEventListener("click", async () => {
+        const topItem = cartState.items[0];
+        if (!topItem) return;
+        const show = cartState.selectedShow || { show: topItem.name, time: topItem.time };
+        const shareText = `我已购票：${show.show}（${show.time}）- 一起去茯茶镇戏剧节吧！`;
+        const shareUrl = `${window.location.origin}${window.location.pathname}?show=${encodeURIComponent(show.show)}`;
+        if (navigator.share) {
+          try {
+            await navigator.share({ title: "茯茶镇戏剧节", text: shareText, url: shareUrl });
+            return;
+          } catch {
+            // ignore and fallback
+          }
+        }
+        try {
+          await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+          shareTicketBtn.textContent = "链接已复制";
+        } catch {
+          shareTicketBtn.textContent = "请手动复制链接";
+        }
+        window.setTimeout(() => {
+          shareTicketBtn.textContent = "邀请戏搭子（分享链接）";
+        }, 1200);
+      });
+
+      closeSuccessButton.addEventListener("click", closeSuccess);
+
+      toggleMoreLoginButton.addEventListener("click", () => {
+        moreLoginPanel.classList.toggle("hidden");
+      });
+
+      closeAuthModalButton.addEventListener("click", closeAuthModal);
+      authModal.addEventListener("click", (event) => {
+        if (event.target === authModal) closeAuthModal();
+      });
+
+      wechatQuickLoginButton.addEventListener("click", () => {
+        if (!authAgreeCheckbox.checked) {
+          runInputError(authAgreeCheckbox);
+          return;
+        }
+        completeAuthAndContinue();
+      });
+
+      sendCodeButton.addEventListener("click", () => {
+        const phone = authPhoneInput.value.trim();
+        if (!/^1\d{10}$/.test(phone)) {
+          runInputError(authPhoneInput);
+          return;
+        }
+        resetInputError(authPhoneInput);
+        startCodeCountdown();
+      });
+
+      authPhoneInput.addEventListener("input", () => resetInputError(authPhoneInput));
+      authEmailInput.addEventListener("input", () => resetInputError(authEmailInput));
+
+      authSubmitButton.addEventListener("click", () => {
+        const phone = authPhoneInput.value.trim();
+        const email = authEmailInput.value.trim();
+        const hasPhone = phone.length > 0;
+        const hasEmail = email.length > 0;
+        let valid = true;
+
+        if (!authAgreeCheckbox.checked) valid = false;
+        if (hasPhone && !/^1\d{10}$/.test(phone)) {
+          valid = false;
+          runInputError(authPhoneInput);
+        }
+        if (hasEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          valid = false;
+          runInputError(authEmailInput);
+        }
+        if (!hasPhone && !hasEmail) {
+          valid = false;
+          runInputError(authPhoneInput);
+          runInputError(authEmailInput);
+        }
+        if (!valid) return;
+
+        const original = authSubmitButton.textContent;
+        authSubmitButton.textContent = "Loading...";
+        authSubmitButton.disabled = true;
+        window.setTimeout(() => {
+          authSubmitButton.textContent = original;
+          authSubmitButton.disabled = false;
+          completeAuthAndContinue();
+        }, 1000);
+      });
+
+      guestContinueButton.addEventListener("click", () => {
+        pendingPurchaseAction = null;
+        closeAuthModal();
+      });
+
+      const renderScheduleDayEvents = () => {
+        scheduleSelectedDateElement.textContent = selectedScheduleDateKey.replaceAll("-", ".");
+        const events = scheduleEvents.filter((event) => event.date === selectedScheduleDateKey);
+        scheduleDayEventsElement.innerHTML = "";
+        if (!events.length) {
+          scheduleDayEventsElement.innerHTML = '<li class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900/75">当日暂无排期</li>';
+          return;
+        }
+        events.forEach((event) => {
+          const li = document.createElement("li");
+          li.className = "rounded-lg border border-emerald-900/10 bg-white px-3 py-3";
+          li.innerHTML = `
+            <p class="font-semibold text-emerald-950">${event.title}</p>
+            <p class="mt-1 text-xs text-emerald-900/75">时间：${event.time}</p>
+            <p class="mt-1 text-xs text-emerald-900/75">地点：${event.venue}</p>
+            <p class="mt-1 text-xs font-semibold text-emerald-900">票价：￥${event.price}起</p>
+            <button
+              class="schedule-buy-btn btn-emerald-ux mt-2 rounded-md px-3 py-1.5 text-xs font-semibold"
+              data-show="${event.title}"
+              data-show-time="${event.date.replaceAll("-", ".")} ${event.time}"
+              data-show-venue="${event.venue}"
+            >
+              立即购买该场次
+            </button>
+          `;
+          scheduleDayEventsElement.appendChild(li);
+        });
+      };
+
+      const renderScheduleCalendar = () => {
+        const year = currentScheduleMonth.getFullYear();
+        const month = currentScheduleMonth.getMonth();
+        scheduleCurrentMonthElement.textContent = `${year} 年 ${String(month + 1).padStart(2, "0")} 月`;
+        const firstDay = new Date(year, month, 1);
+        const startWeekday = firstDay.getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+        scheduleCalendarGrid.innerHTML = "";
+
+        for (let i = 0; i < 42; i += 1) {
+          const dayOffset = i - startWeekday + 1;
+          const cellDate =
+            dayOffset <= 0
+              ? new Date(year, month - 1, daysInPrevMonth + dayOffset)
+              : dayOffset > daysInMonth
+              ? new Date(year, month + 1, dayOffset - daysInMonth)
+              : new Date(year, month, dayOffset);
+
+          const dateKey = toDateKey(cellDate);
+          const inCurrentMonth = cellDate.getMonth() === month;
+          const eventCount = scheduleEvents.filter((event) => event.date === dateKey).length;
+          const isSelected = dateKey === selectedScheduleDateKey;
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = [
+            "min-h-16 rounded-lg border p-1.5 text-left transition md:min-h-20",
+            inCurrentMonth ? "border-emerald-900/15 bg-white hover:border-theme-emerald" : "border-transparent bg-emerald-50/50 text-emerald-900/40",
+            isSelected ? "border-theme-emerald ring-2 ring-theme-emerald/30" : "",
+          ].join(" ");
+          button.innerHTML = `<span class="text-xs font-semibold md:text-sm">${cellDate.getDate()}</span>${eventCount ? `<span class="mt-1 block text-[11px] text-theme-emerald">${eventCount} 场演出</span>` : ""}`;
+          button.addEventListener("click", () => {
+            selectedScheduleDateKey = dateKey;
+            renderScheduleCalendar();
+            renderScheduleDayEvents();
+          });
+          scheduleCalendarGrid.appendChild(button);
+        }
+      };
+
+      const syncSelectedDateToMonth = () => {
+        const year = currentScheduleMonth.getFullYear();
+        const month = currentScheduleMonth.getMonth();
+        const candidate = scheduleEvents.find((event) => {
+          const d = new Date(event.date);
+          return d.getFullYear() === year && d.getMonth() === month;
+        });
+        if (candidate) selectedScheduleDateKey = candidate.date;
+      };
+
+      schedulePrevMonthButton.addEventListener("click", () => {
+        currentScheduleMonth = new Date(currentScheduleMonth.getFullYear(), currentScheduleMonth.getMonth() - 1, 1);
+        syncSelectedDateToMonth();
+        renderScheduleCalendar();
+        renderScheduleDayEvents();
+      });
+      scheduleNextMonthButton.addEventListener("click", () => {
+        currentScheduleMonth = new Date(currentScheduleMonth.getFullYear(), currentScheduleMonth.getMonth() + 1, 1);
+        syncSelectedDateToMonth();
+        renderScheduleCalendar();
+        renderScheduleDayEvents();
+      });
+
+      closeCartButton.addEventListener("click", closeCart);
+      cartBackdrop.addEventListener("click", closeCart);
+      cartButton.addEventListener("click", openCart);
+      minimizeCheckoutButton.addEventListener("click", minimizeCheckout);
+      minimizedCheckoutButton.addEventListener("click", openCheckoutPanel);
+      checkoutPanel.addEventListener("click", (event) => {
+        if (event.target === checkoutPanel) minimizeCheckout();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        closeCart();
+        closeQuantityModal();
+        closeSeatModal();
+        closeUpsell();
+        minimizeCheckout();
+        closeSuccess();
+      });
+
+      requestAnimationFrame(() => {
+        setActiveProgramTab("all");
+        renderProgramCards();
+        renderSeatGrid();
+        renderSeatSummary();
+        renderCart();
+        renderCheckout();
+        syncSelectedDateToMonth();
+        renderScheduleCalendar();
+        renderScheduleDayEvents();
+      });
+    </script>
+  </body>
+</html>
